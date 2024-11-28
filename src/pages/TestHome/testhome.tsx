@@ -2,8 +2,8 @@ import { useRef, useState } from 'react'
 import { Son } from '../../components/son'
 import { type Arr } from '../../types/test'
 import axios from 'axios'
-import './home.scss'
-function Home() {
+import './testhome.scss'
+function TestHome() {
   interface state {
     name: string
     age: number
@@ -66,4 +66,4 @@ function Home() {
   )
 }
 
-export default Home
+export default TestHome
