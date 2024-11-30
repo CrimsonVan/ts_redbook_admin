@@ -6,6 +6,8 @@ import Movie from '../pages/Movie/movie'
 import Todolist from '../pages/Todolist/todolist'
 import Login from '../pages/Login/login'
 import Users from '../pages/Layout/Users/Users'
+import PostPass from '../pages/Layout/Test/postpass'
+import PostCate from '../pages/Layout/Test/postcate'
 import { createHashRouter } from 'react-router-dom'
 import AuthRoute from '../components/AuthRoute'
 export const router = createHashRouter([
@@ -19,7 +21,9 @@ export const router = createHashRouter([
     children: [
       { index: true, element: <Home /> },
       { path: '/test', element: <Test /> },
-      { path: '/users', element: <Users /> }
+      { path: '/users', element: <Users /> },
+      { path: '/postpass', element: <PostPass /> },
+      { path: '/postcate', element: <PostCate /> }
     ]
   },
   { path: '/testhome', element: <TestHome /> },

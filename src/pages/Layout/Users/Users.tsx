@@ -36,6 +36,11 @@ const Users = () => {
       key: 'username'
     },
     {
+      title: '粉丝数',
+      dataIndex: 'followed_count',
+      key: 'followed_count'
+    },
+    {
       title: '生日',
       dataIndex: 'birthday',
       key: 'birthday'

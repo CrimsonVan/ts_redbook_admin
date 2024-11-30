@@ -50,8 +50,8 @@ const PostTable = () => {
     },
     {
       title: '评论数',
-      dataIndex: 'comments_length',
-      key: 'comments_length'
+      dataIndex: 'comment_num',
+      key: 'comment_num'
     },
 
     {

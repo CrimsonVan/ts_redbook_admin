@@ -39,9 +39,9 @@ const items: MenuItem[] = [
   getItem('首页', '/', <PieChartOutlined />),
   getItem('文章列表', '3', <DesktopOutlined />),
   getItem('帖文管理', 'sub1', <UserOutlined />, [
-    getItem('贴文审核', '/test'),
-    getItem('Bill', '4'),
-    getItem('Alex', '5')
+    getItem('贴文管理', '/test'),
+    getItem('贴文审核', '/postpass'),
+    getItem('贴文分类', '/postcate')
   ]),
   getItem('用户管理', 'sub2', <TeamOutlined />, [
     getItem('信息审核', '/users'),
@@ -95,7 +95,7 @@ const LayoutPage: React.FC = () => {
   }
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+      <Sider collapsed={collapsed}>
         <div className="demo-logo-vertical">小红书</div>
         <Menu
           onClick={onClick}
