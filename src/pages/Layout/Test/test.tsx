@@ -1,4 +1,4 @@
-import { Space, Table, Popconfirm, Select, Input } from 'antd'
+import { Space, Table, Popconfirm, Select, Input, message } from 'antd'
 import type { TableProps } from 'antd'
 import { getPostService, delPostService, updatePostService } from '../../../api/post'
 import { useState, useEffect, useRef } from 'react'
@@ -97,10 +97,13 @@ const PostTable = () => {
       }
     }
   ]
+  //当前页数
+  const [currentPage, setCurrentPage] = useState(1)
   //table分页所需参数
   const paginationProps = {
     pageSize: 8, // 每页数据条数
     total: 99, // 总条数
+    current: currentPage,
     onChange: (page: any) => handlePageChange(page), //改变页码的函数
     hideOnSinglePage: false,
     showSizeChanger: false
@@ -113,25 +116,22 @@ const PostTable = () => {
   const [postArr, setPostArr] = useState<Array<any>>([])
   //删除帖子操作
   const removeItem = async (e: any) => {
-    let res = await delPostService({ id: e.id })
-    if (res.data.message === '删除帖子成功') {
-      console.log('删除成功')
-      setReqQuery({ ...reqQuery })
-    }
+    await delPostService({ id: e.id })
+    setReqQuery({ ...reqQuery })
   }
   //修过帖子审核状态
   const passPost = async (e: any) => {
     console.log('打印要通过审核的帖子', e)
     let newStatus = e.status === '通过' ? '未通过' : '通过'
-    let res = await updatePostService({ status: newStatus, id: e.id })
-    if (res.data.message === '更新帖子状态成功') {
-      setReqQuery({ ...reqQuery })
-    }
+    await updatePostService({ status: newStatus, id: e.id })
+    setReqQuery({ ...reqQuery })
+    message.success('修改审核状态成功')
   }
   //修改页数并获取数据
   const handlePageChange = (p: any) => {
     console.log('打印p', p)
     setReqQuery({ ...reqQuery, pagenum: p })
+    setCurrentPage(p)
   }
   //获取贴文数据
   useEffect(() => {
@@ -142,7 +142,6 @@ const PostTable = () => {
         item.preContent = item.content.slice(0, 8) + '...'
       })
       console.log('帖子数量', res.data.data)
-
       setPostArr(res.data.data)
     }
     getPostList()
@@ -157,11 +156,11 @@ const PostTable = () => {
   //筛选审核状态
   const handleChange = (value: string) => {
     console.log(`selected ${value}`)
-    setReqQuery({ ...reqQuery, status: value })
+    setReqQuery({ ...reqQuery, status: value, pagenum: 1 })
+    setCurrentPage(1)
   }
   //筛选作者
   const onSearch: any = (value: any) => {
-    console.log('search', value)
     setReqQuery({ ...reqQuery, nick_name: value })
   }
   return (

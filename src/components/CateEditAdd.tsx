@@ -2,8 +2,11 @@ import { Modal } from 'antd'
 import { useState } from 'react'
 import React, { useImperativeHandle } from 'react'
 import { Input } from 'antd'
-const CateEditAdd = ({ addEditCate }: any, ref: any) => {
-  //   console.log('打印父传子的传参', props)
+import { useSelector } from 'react-redux'
+import { addPostCateService, updatePostCateService } from '../api/cate'
+
+const CateEditAdd = ({ getCateList, reqQuery, changePage }: any, ref: any) => {
+  // console.log('打印父传子的传参', props)
   useImperativeHandle(ref, () => ({
     showModal
   }))
@@ -27,20 +30,40 @@ const CateEditAdd = ({ addEditCate }: any, ref: any) => {
       setEditId(obj.cate_id)
     }
   }
-  //修改贴文状态为通过
+  // 查询state中的数据
+  const userInfo = useSelector((state: any) => state.todoStore.userInfo)
+  // 新增或更新贴文分类
+  const addEditCate = async (obj: { type: any; inpVal: any; cate_id?: any }) => {
+    if (obj.type === '新增') {
+      await addPostCateService({
+        cate_name: obj.inpVal,
+        creater: userInfo.nick_name,
+        creater_username: userInfo.username,
+        creater_avatar: userInfo.avatar
+      })
+      setInpVal('')
+      setIsModalOpen(false)
+      getCateList({ ...reqQuery, pagenum: 1 })
+      changePage(1)
+    } else if (obj.type === '编辑') {
+      await updatePostCateService({ cate_id: obj.cate_id, cate_name: obj.inpVal })
+      setInpVal('')
+      setIsModalOpen(false)
+      getCateList({ ...reqQuery })
+    }
+  }
+  //点击确认
   const handleOk = () => {
     if (typeText === '新增') {
       addEditCate({ type: typeText, inpVal })
     } else if (typeText === '编辑') {
       addEditCate({ type: typeText, inpVal, cate_id: editId })
-      //   console.log('打印编辑传参', inpVal, editId)
     }
   }
   //修改贴文状态为未通过
   const handleCancel = () => {
     console.log('cancel')
     setInpVal('')
-
     setIsModalOpen(false)
   }
   return (

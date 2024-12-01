@@ -1,9 +1,9 @@
 import { Space, Table, Popconfirm, Input, Button } from 'antd'
 import type { TableProps } from 'antd'
 import { useState, useEffect, useRef } from 'react'
-import { getPostCateService, addPostCateService, updatePostCateService } from '../../../api/cate'
-import CateEditAdd from '../../../components/cateEditAdd'
-import { useSelector } from 'react-redux'
+import { getPostCateService } from '../../../api/cate'
+import CateEditAdd from '../../../components/CateEditAdd'
+
 const { Search } = Input
 const PostCate = () => {
   const postColumns: TableProps<any>['columns'] = [
@@ -74,10 +74,13 @@ const PostCate = () => {
       }
     }
   ]
+  //当前页数
+  const [currentPage, setCurrentPage] = useState(1)
   //table分页所需参数
   const paginationProps = {
     pageSize: 8, // 每页数据条数
     total: 99, // 总条数
+    current: currentPage,
     onChange: (page: any) => handlePageChange(page), //改变页码的函数
     hideOnSinglePage: false,
     showSizeChanger: false
@@ -92,6 +95,7 @@ const PostCate = () => {
   const handlePageChange = (p: any) => {
     console.log('打印p', p)
     setReqQuery({ ...reqQuery, pagenum: p })
+    setCurrentPage(p)
   }
   //获取分类列表数据
   useEffect(() => {
@@ -111,30 +115,9 @@ const PostCate = () => {
   const showSonComp = (obj: { type: any; cate_id?: any; cate_name?: any }) => {
     childRef.current.showModal(obj)
   }
-  // 查询state中的数据
-  const userInfo = useSelector((state: any) => state.todoStore.userInfo)
-  // 新增/编辑 贴文分类
-  const addEditCate = async (obj: { type: any; inpVal: any; cate_id?: any }) => {
-    if (obj.type === '新增') {
-      let res = await addPostCateService({
-        cate_name: obj.inpVal,
-        creater: userInfo.nick_name,
-        creater_username: userInfo.username,
-        creater_avatar: userInfo.avatar
-      })
-      if (res.data.message === '新增分类成功' || res.data.message === '编辑分类成功') {
-        setReqQuery({ ...reqQuery })
-      }
-    } else if (obj.type === '编辑') {
-      let res = await updatePostCateService({ cate_id: obj.cate_id, cate_name: obj.inpVal })
-      if (res.data.message === '新增分类成功' || res.data.message === '编辑分类成功') {
-        setReqQuery({ ...reqQuery })
-      }
-    }
-  }
+
   //筛选用户名
   const onSearch: any = (type: string, value: any) => {
-    console.log('search类型和值分别为', type, value)
     const query: any = {
       pagenum: reqQuery.pagenum
     }
@@ -173,7 +156,12 @@ const PostCate = () => {
         </Button>
       </div>
       <Table<any> columns={postColumns} dataSource={cates} pagination={paginationProps} />
-      <CateEditAdd ref={childRef} addEditCate={addEditCate}></CateEditAdd>
+      <CateEditAdd
+        ref={childRef}
+        getCateList={setReqQuery}
+        reqQuery={reqQuery}
+        changePage={setCurrentPage}
+      ></CateEditAdd>
     </>
   )
 }
