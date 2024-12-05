@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { clearToken, clearUserInfo } from '../../store/modules/todollist'
 import { getPersistToken } from '../../utils/token'
 import {
-  DesktopOutlined,
   FileOutlined,
   PieChartOutlined,
   TeamOutlined,
@@ -37,7 +36,6 @@ function getItem(
 
 const items: MenuItem[] = [
   getItem('首页', '/', <PieChartOutlined />),
-  getItem('文章列表', '3', <DesktopOutlined />),
   getItem('帖文管理', 'sub1', <UserOutlined />, [
     getItem('贴文管理', '/test'),
     getItem('贴文审核', '/postpass'),
@@ -47,7 +45,10 @@ const items: MenuItem[] = [
     getItem('信息审核', '/users'),
     getItem('Team 2', '8')
   ]),
-  getItem('Files', '9', <FileOutlined />)
+  getItem('消息管理', 'sub3', <FileOutlined />, [
+    getItem('评论管理', '/message'),
+    getItem('Team 3', '10')
+  ])
 ]
 
 const LayoutPage: React.FC = () => {
@@ -65,7 +66,7 @@ const LayoutPage: React.FC = () => {
   const navigate = useNavigate() //路由跳转
   const location = useLocation() //获取当前路由
   const {
-    token: { colorBgContainer, borderRadiusLG }
+    token: { colorBgContainer }
   } = theme.useToken()
   const onClick = (e: any) => {
     const getBreadArr = (arr: any) => {
@@ -140,13 +141,11 @@ const LayoutPage: React.FC = () => {
           </div>
         </Header>
         <Content style={{ margin: '0 16px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }} items={breadList}></Breadcrumb>
+          <Breadcrumb style={{ margin: '16px 0 0px' }} items={breadList}></Breadcrumb>
           <div
             style={{
               padding: 24,
-              minHeight: 400,
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG
+              minHeight: 400
             }}
           >
             <Outlet></Outlet>

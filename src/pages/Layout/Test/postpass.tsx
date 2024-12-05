@@ -1,12 +1,13 @@
-import { Space, Table, Popconfirm, Input } from 'antd'
+import { Space, Table, Popconfirm, Input, Button } from 'antd'
 import type { TableProps } from 'antd'
 import { getPostService, updatePostService } from '../../../api/post'
 import { useState, useEffect, useRef } from 'react'
 import PostDetail from '../../../components/postDetail'
-const { Search } = Input
+
 const PostPass = () => {
   console.log('测试多次渲染')
-
+  //筛选参数对象
+  const [formData, setFormData] = useState({})
   const postColumns: TableProps<any>['columns'] = [
     {
       title: '编号',
@@ -139,10 +140,14 @@ const PostPass = () => {
     childRef.current.showModal(post)
   }
 
-  //筛选作者
-  const onSearch: any = (value: any) => {
-    console.log('search', value)
-    setReqQuery({ ...reqQuery, nick_name: value })
+  //点击查询操作
+  const finish = () => {
+    console.log('打印formData', formData)
+    setReqQuery({
+      ...reqQuery,
+      ...formData,
+      pagenum: 1
+    })
   }
   return (
     <>
@@ -150,9 +155,21 @@ const PostPass = () => {
         <span
           style={{ marginRight: '5px', marginLeft: '10px', fontWeight: '600', color: '#6e6e6e' }}
         >
-          作者
+          标题
         </span>
-        <Search size="small" placeholder="input author name" onSearch={onSearch} enterButton />
+        <Input
+          onChange={(e) => {
+            if (e.target.value.trim() === '') {
+              setFormData({ ...formData, title: undefined })
+              return
+            }
+            setFormData({ ...formData, title: e.target.value.trim() })
+          }}
+          size="small"
+        />
+        <Button onClick={finish} size="small" type="primary">
+          查询
+        </Button>
       </Space>
       <Table<any> columns={postColumns} dataSource={postArr} pagination={paginationProps} />
       <PostDetail ref={childRef} updateStatus={passPost}></PostDetail>

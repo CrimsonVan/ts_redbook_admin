@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react'
 import { getPostCateService } from '../../../api/cate'
 import CateEditAdd from '../../../components/CateEditAdd'
 
-const { Search } = Input
 const PostCate = () => {
   const postColumns: TableProps<any>['columns'] = [
     {
@@ -74,6 +73,8 @@ const PostCate = () => {
       }
     }
   ]
+  //筛选参数对象
+  const [formData, setFormData] = useState({})
   //当前页数
   const [currentPage, setCurrentPage] = useState(1)
   //table分页所需参数
@@ -115,14 +116,14 @@ const PostCate = () => {
   const showSonComp = (obj: { type: any; cate_id?: any; cate_name?: any }) => {
     childRef.current.showModal(obj)
   }
-
-  //筛选用户名
-  const onSearch: any = (type: string, value: any) => {
-    const query: any = {
-      pagenum: reqQuery.pagenum
-    }
-    query[type] = value
-    setReqQuery(query)
+  //点击查询操作
+  const finish = () => {
+    console.log('打印formData', formData)
+    setReqQuery({
+      ...reqQuery,
+      ...formData,
+      pagenum: 1
+    })
   }
   return (
     <>
@@ -132,23 +133,34 @@ const PostCate = () => {
         >
           分类名称
         </span>
-        <Search
-          onSearch={(val: any) => onSearch('cate_name', val)}
+        <Input
+          onChange={(e) => {
+            if (e.target.value.trim() === '') {
+              setFormData({ ...formData, cate_name: undefined })
+              return
+            }
+            setFormData({ ...formData, cate_name: e.target.value.trim() })
+          }}
           size="small"
-          placeholder="input author name"
-          enterButton
         />
         <span
           style={{ marginRight: '5px', marginLeft: '10px', fontWeight: '600', color: '#6e6e6e' }}
         >
           创建者
         </span>
-        <Search
-          onSearch={(val: any) => onSearch('creater', val)}
+        <Input
+          onChange={(e) => {
+            if (e.target.value.trim() === '') {
+              setFormData({ ...formData, creater: undefined })
+              return
+            }
+            setFormData({ ...formData, creater: e.target.value.trim() })
+          }}
           size="small"
-          placeholder="input author name"
-          enterButton
         />
+        <Button onClick={finish} size="small" type="primary">
+          查询
+        </Button>
       </Space>
       <div style={{ marginLeft: '10px', marginBottom: 10 }}>
         <Button onClick={() => showSonComp({ type: '新增' })} type="primary">

@@ -8,6 +8,7 @@ import Login from '../pages/Login/login'
 import Users from '../pages/Layout/Users/Users'
 import PostPass from '../pages/Layout/Test/postpass'
 import PostCate from '../pages/Layout/Test/postcate'
+import Message from '../pages/Layout/Message/message'
 import { createHashRouter } from 'react-router-dom'
 import AuthRoute from '../components/AuthRoute'
 export const router = createHashRouter([
@@ -23,7 +24,8 @@ export const router = createHashRouter([
       { path: '/test', element: <Test /> },
       { path: '/users', element: <Users /> },
       { path: '/postpass', element: <PostPass /> },
-      { path: '/postcate', element: <PostCate /> }
+      { path: '/postcate', element: <PostCate /> },
+      { path: '/message', element: <Message /> }
     ]
   },
   { path: '/testhome', element: <TestHome /> },

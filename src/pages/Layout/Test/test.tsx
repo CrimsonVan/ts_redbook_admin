@@ -1,12 +1,10 @@
-import { Space, Table, Popconfirm, Select, Input, message } from 'antd'
+import { Space, Table, Popconfirm, Select, Input, message, Button } from 'antd'
 import type { TableProps } from 'antd'
 import { getPostService, delPostService, updatePostService } from '../../../api/post'
+import { getPostCateService } from '../../../api/cate'
 import { useState, useEffect, useRef } from 'react'
 import PostDetail from '../../../components/postDetail'
-const { Search } = Input
 const PostTable = () => {
-  console.log('测试多次渲染')
-
   const postColumns: TableProps<any>['columns'] = [
     {
       title: '编号',
@@ -97,6 +95,8 @@ const PostTable = () => {
       }
     }
   ]
+  //筛选参数对象
+  const [formData, setFormData] = useState({})
   //当前页数
   const [currentPage, setCurrentPage] = useState(1)
   //table分页所需参数
@@ -133,8 +133,17 @@ const PostTable = () => {
     setReqQuery({ ...reqQuery, pagenum: p })
     setCurrentPage(p)
   }
+  //获取分类
+  useEffect(() => {
+    const getCate = async () => {
+      let res = await getPostCateService({ pagenum: 1 })
+      console.log('获取cate', res.data.data)
+    }
+    getCate()
+  }, [])
   //获取贴文数据
   useEffect(() => {
+    //获取帖子列表
     const getPostList = async () => {
       let res = await getPostService(reqQuery)
       res.data.data.forEach((item: any) => {
@@ -145,7 +154,6 @@ const PostTable = () => {
       setPostArr(res.data.data)
     }
     getPostList()
-    console.log('pagenum改变触发useEffect')
   }, [reqQuery])
   //子组件dom
   const childRef: any = useRef(null)
@@ -153,16 +161,16 @@ const PostTable = () => {
   const showSonComp = (post: any) => {
     childRef.current.showModal(post)
   }
-  //筛选审核状态
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`)
-    setReqQuery({ ...reqQuery, status: value, pagenum: 1 })
-    setCurrentPage(1)
+  //点击查询操作
+  const finish = () => {
+    console.log('打印formData', formData)
+    setReqQuery({
+      ...reqQuery,
+      ...formData,
+      pagenum: 1
+    })
   }
-  //筛选作者
-  const onSearch: any = (value: any) => {
-    setReqQuery({ ...reqQuery, nick_name: value })
-  }
+
   return (
     <>
       <Space style={{ marginBottom: 16 }}>
@@ -173,7 +181,7 @@ const PostTable = () => {
         </span>
         <Select
           style={{ width: 120 }}
-          onChange={handleChange}
+          onChange={(val) => setFormData({ ...formData, status: val })}
           size="small"
           allowClear={true}
           options={[
@@ -186,7 +194,34 @@ const PostTable = () => {
         >
           作者
         </span>
-        <Search size="small" placeholder="input author name" onSearch={onSearch} enterButton />
+        <Input
+          onChange={(e) => {
+            if (e.target.value.trim() === '') {
+              setFormData({ ...formData, nick_name: undefined })
+              return
+            }
+            setFormData({ ...formData, nick_name: e.target.value.trim() })
+          }}
+          size="small"
+        />
+        <span
+          style={{ marginRight: '5px', marginLeft: '10px', fontWeight: '600', color: '#6e6e6e' }}
+        >
+          标题
+        </span>
+        <Input
+          onChange={(e) => {
+            if (e.target.value.trim() === '') {
+              setFormData({ ...formData, title: undefined })
+              return
+            }
+            setFormData({ ...formData, title: e.target.value.trim() })
+          }}
+          size="small"
+        />
+        <Button onClick={finish} size="small" type="primary">
+          查询
+        </Button>
       </Space>
       <Table<any> columns={postColumns} dataSource={postArr} pagination={paginationProps} />
       <PostDetail ref={childRef} updateStatus={passPost}></PostDetail>

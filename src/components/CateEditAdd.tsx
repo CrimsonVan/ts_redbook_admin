@@ -1,7 +1,7 @@
 import { Modal } from 'antd'
 import { useState } from 'react'
 import React, { useImperativeHandle } from 'react'
-import { Input } from 'antd'
+import { Input, message } from 'antd'
 import { useSelector } from 'react-redux'
 import { addPostCateService, updatePostCateService } from '../api/cate'
 
@@ -45,11 +45,13 @@ const CateEditAdd = ({ getCateList, reqQuery, changePage }: any, ref: any) => {
       setIsModalOpen(false)
       getCateList({ ...reqQuery, pagenum: 1 })
       changePage(1)
+      message.success('新增分类成功')
     } else if (obj.type === '编辑') {
       await updatePostCateService({ cate_id: obj.cate_id, cate_name: obj.inpVal })
       setInpVal('')
       setIsModalOpen(false)
       getCateList({ ...reqQuery })
+      message.success('编辑分类成功')
     }
   }
   //点击确认

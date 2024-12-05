@@ -1,17 +1,18 @@
-import { useEffect, useState } from 'react'
-import { allUserGetService } from '../../../api/user'
 import { Space, Table, Popconfirm, Input, Button } from 'antd'
 import type { TableProps } from 'antd'
+import { useState, useEffect, useRef } from 'react'
+import { getCommentsService } from '../../../api/comments'
+import CommentView from '../../../components/CommentView'
 
-const Users = () => {
-  const usersColumns: TableProps<any>['columns'] = [
+const Message = () => {
+  const postColumns: TableProps<any>['columns'] = [
     {
       title: '编号',
-      dataIndex: 'id',
-      key: 'id'
+      dataIndex: 'comment_id',
+      key: 'comment_id'
     },
     {
-      title: '昵称',
+      title: '评论人',
       dataIndex: 'nick_name',
       key: 'nick_name'
     },
@@ -31,54 +32,36 @@ const Users = () => {
       }
     },
     {
-      title: '用户名',
-      dataIndex: 'username',
-      key: 'username'
-    },
-    {
-      title: '粉丝数',
-      dataIndex: 'followed_count',
-      key: 'followed_count'
-    },
-    {
-      title: '生日',
-      dataIndex: 'birthday',
-      key: 'birthday'
+      title: '被评论人',
+      dataIndex: 'reply_nickname',
+      key: 'reply_nickname'
     },
 
     {
-      title: '签名',
-      dataIndex: 'signature',
-      key: 'signature'
+      title: '回复帖子编号',
+      dataIndex: 'post_id',
+      key: 'post_id'
     },
     {
-      title: '密码',
-      dataIndex: 'password',
-      key: 'password'
+      title: '内容',
+      dataIndex: 'preContent',
+      key: 'preContent'
     },
+
     {
       title: '操作',
       key: 'action',
-      render: (row) => {
+      render: (row: any) => {
         return (
           <Space size="middle">
+            <a onClick={() => showSonComp(row)}>查看</a>
             <Popconfirm
               title="Delete the task"
               description="Are you sure to delete this task?"
               okText="Yes"
               cancelText="No"
-              onConfirm={() => console.log('Delete', row)}
             >
-              <a>Delete</a>
-            </Popconfirm>
-            <Popconfirm
-              title="Delete the task"
-              description="Are you sure to delete this task?"
-              okText="Yes"
-              cancelText="No"
-              onConfirm={() => console.log('edit', row)}
-            >
-              <a>edit</a>
+              <a>删除</a>
             </Popconfirm>
           </Space>
         )
@@ -87,38 +70,56 @@ const Users = () => {
   ]
   //筛选参数对象
   const [formData, setFormData] = useState({})
+  //当前页数
+  const [currentPage, setCurrentPage] = useState(1)
   //table分页所需参数
   const paginationProps = {
     pageSize: 8, // 每页数据条数
     total: 99, // 总条数
+    current: currentPage,
     onChange: (page: any) => handlePageChange(page), //改变页码的函数
     hideOnSinglePage: false,
     showSizeChanger: false
   }
-  //请求用户列表的参数
+  //请求分类列表的参数
   const [reqQuery, setReqQuery] = useState<any>({
     pagenum: 1
   })
+  //分类列表
+  const [comments, setComments] = useState<Array<any>>([])
   //修改页数并获取数据
   const handlePageChange = (p: any) => {
     console.log('打印p', p)
     setReqQuery({ ...reqQuery, pagenum: p })
+    setCurrentPage(p)
   }
-  //用户列表
-  const [users, setUsers] = useState<Array<any>>()
-  //获取用户列表
+  //获取分类列表数据
   useEffect(() => {
-    const getUsers = async () => {
-      let res = await allUserGetService(reqQuery)
-      console.log('打印所有用户', res.data.data)
+    const getCateList = async () => {
+      let res = await getCommentsService(reqQuery)
       res.data.data.forEach((item: any) => {
-        item.key = item.id
+        item.key = item.comment_id
+        if (item.content.length >= 5) {
+          item.preContent = item.content.slice(0, 5) + '...'
+        } else {
+          item.preContent = item.content
+        }
+        if (item.reply_nickname === '0') {
+          item.reply_nickname = item.post_nickname
+        }
       })
-      setUsers(res.data.data)
+      console.log('评论列表数量', res.data.data)
+      setComments(res.data.data)
     }
-    getUsers()
+    getCateList()
   }, [reqQuery])
 
+  //子组件dom
+  const childRef: any = useRef(null)
+  //操作子组件方法
+  const showSonComp = (row: any) => {
+    childRef.current.showModal(row)
+  }
   //点击查询操作
   const finish = () => {
     console.log('打印formData', formData)
@@ -130,11 +131,11 @@ const Users = () => {
   }
   return (
     <>
-      <Space style={{ marginBottom: 16 }}>
+      <Space style={{ marginBottom: 15 }}>
         <span
           style={{ marginRight: '5px', marginLeft: '10px', fontWeight: '600', color: '#6e6e6e' }}
         >
-          昵称
+          发布者
         </span>
         <Input
           onChange={(e) => {
@@ -149,24 +150,27 @@ const Users = () => {
         <span
           style={{ marginRight: '5px', marginLeft: '10px', fontWeight: '600', color: '#6e6e6e' }}
         >
-          用户名
+          被评论人
         </span>
         <Input
           onChange={(e) => {
             if (e.target.value.trim() === '') {
-              setFormData({ ...formData, username: undefined })
+              setFormData({ ...formData, reply_nickname: undefined })
               return
             }
-            setFormData({ ...formData, username: e.target.value.trim() })
+            setFormData({ ...formData, reply_nickname: e.target.value.trim() })
           }}
           size="small"
         />
+
         <Button onClick={finish} size="small" type="primary">
           查询
         </Button>
       </Space>
-      <Table<any> columns={usersColumns} dataSource={users} pagination={paginationProps} />
+      <Table<any> columns={postColumns} dataSource={comments} pagination={paginationProps} />
+      <CommentView ref={childRef}></CommentView>
     </>
   )
 }
-export default Users
+
+export default Message
