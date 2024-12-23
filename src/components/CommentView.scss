@@ -1,0 +1,28 @@
+.comment{
+    // background-color: cornsilk;
+    display: flex;
+    .comment_avatar{
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    .comment_main{
+        flex: 1;
+        // background-color: salmon;
+        padding: 0px 10px;
+        .comment_name{
+            color: #6e6e6e;
+            font-size: 13px;
+        }
+        .comment_content{
+            color: black;
+            font-size: 14px;
+        }
+        .comment_bottom{
+            color: #6e6e6e;
+            font-size: 12px;
+
+        }
+    }
+}
