@@ -1,41 +1,32 @@
-import './movie.scss'
+import Styles from './movie.module.less'
+import styled from 'styled-components'
+import cn from 'classnames'
+import { useData } from './useData'
 function Movie() {
-  type id = {
-    id: string
-  }
-  type person = id & {
-    name: string
-    age?: number
-  }
-  type categorys<T> = {
-    title: string
-    nums: number
-    arrlist: T[]
-  }
-  const jack: person = {
-    id: '12138',
-    name: 'jack'
-  }
-  const fruits: categorys<number> = {
-    title: 'fruits',
-    nums: 11,
-    arrlist: [1, 2, 4]
-  }
-  console.log('打印fruits', typeof fruits.arrlist[0])
-
-  console.log('打印jack', typeof jack.id)
-
+  //自定义hooks
+  useData()
   return (
-    <div className="movie">
-      <div className="left">
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
+    <>
+      <div className={Styles['movie']}>
+        <div className={cn(Styles['movie-item'], { [Styles.active]: true })}></div>
       </div>
-      <div className="middle">1</div>
-      <div className="right">1</div>
-    </div>
+      <div className={Styles.movie2}></div>
+      <StyleComp>
+        <div className="sc-item">test</div>
+      </StyleComp>
+    </>
   )
 }
+
+const StyleComp = styled.div`
+  height: 100px;
+  background-color: green;
+  position: sticky;
+  display: flex;
+  .sc-item {
+    width: 40px;
+    background-color: yellowgreen;
+  }
+`
 
 export default Movie
