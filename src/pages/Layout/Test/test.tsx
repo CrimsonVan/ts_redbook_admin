@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react'
 import PostDetail from '../../../components/postDetail'
 import { useTest } from './myHooks'
 import cn from 'classnames'
+import { useRequest } from 'ahooks'
 const PostTable = () => {
   const postColumns: TableProps<any>['columns'] = [
     {
@@ -148,21 +149,20 @@ const PostTable = () => {
     setReqQuery({ ...reqQuery, pagenum: p })
     setCurrentPage(p)
   }
-  //获取贴文数据
-  useEffect(() => {
-    //获取帖子列表
-    const getPostList = async () => {
-      let res = await getPostService(reqQuery)
+
+  const { run } = useRequest(() => getPostService(reqQuery), {
+    manual: true,
+    onSuccess: (res) => {
       res.data.data.forEach((item: any) => {
         item.key = item.id
         item.preContent = item.content.slice(0, 8) + '...'
       })
-      console.log('帖子数量', res.data.data)
-      // console.log('测试useSetState', ahooks)
-      // console.log('测试useToggle', state)
       setPostArr(res.data.data)
     }
-    getPostList()
+  })
+  //获取贴文数据
+  useEffect(() => {
+    run()
   }, [reqQuery])
   //子组件dom
   const childRef: any = useRef(null)

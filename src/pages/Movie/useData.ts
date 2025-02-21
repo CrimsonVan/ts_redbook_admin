@@ -1,8 +1,23 @@
 import { useEffect, useMemo, useState } from 'react'
 import { produce } from 'immer'
+import { useRequest } from 'ahooks'
 export function useData() {
   const [movie, setMovie] = useState('超人')
   const [status, setStatus] = useState<string>('是')
+  function getUsername(): Promise<string> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve('jackMa')
+      }, 1000)
+    })
+  }
+  const { run: runAsync } = useRequest(getUsername, {
+    manual: true,
+    onSuccess: () => {
+      console.log('获取异步数据成功')
+    }
+  })
+
   useEffect(() => {
     //熟悉immer拷贝
     const data1 = {
@@ -21,15 +36,15 @@ export function useData() {
   //熟悉useMemo
   //useMemo可以缓存计算结果，重新渲染时不再计算，减少性能损耗
   const useMemoArr = useMemo(() => {
-    let startTime = performance.now()
-    while (performance.now() - startTime < 500) {
-      // 在 500 毫秒内不执行任何操作以模拟极慢的代码
-    }
+    // let startTime = performance.now()
+    // while (performance.now() - startTime < 500) {
+    //   // 在 500 毫秒内不执行任何操作以模拟极慢的代码
+    // }
     const arr = ['是', '否', '是', '否']
     return arr.filter((item) => item === status)
   }, [status])
 
   //熟悉useMemoizedFn
 
-  return { useMemoArr, setStatus, movie, setMovie }
+  return { useMemoArr, setStatus, movie, setMovie, runAsync }
 }

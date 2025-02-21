@@ -8,7 +8,7 @@ function Movie() {
   //useRef
   const domRef = useRef<any>(null)
   //自定义hooks
-  const { useMemoArr, setStatus, movie, setMovie } = useData()
+  const { useMemoArr, setStatus, movie, setMovie, runAsync } = useData()
   //熟悉useSize
   const size = useSize(domRef)
   console.log('size', size)
@@ -22,7 +22,10 @@ function Movie() {
       <StyleComp>
         <div className="sc-item">111</div>
       </StyleComp>
-      <div></div>
+      <div>
+        <button onClick={() => runAsync()}>runAsync</button>
+      </div>
+      {/* <button onClick={() => runAsync()}>runAsync</button> */}
       <div>
         <button onClick={() => setMovie('蝙蝠侠')}>切换</button>
       </div>
