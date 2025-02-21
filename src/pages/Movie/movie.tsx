@@ -1,34 +1,54 @@
-import './movie.less'
+import Styles from './movie.module.less'
 import styled from 'styled-components'
 import cn from 'classnames'
-import { useMovie } from './myHooks'
+import { useData } from './useData'
+import { useSize } from 'ahooks'
+import { useRef } from 'react'
 function Movie() {
-  const { movie } = useMovie()
+  //useRef
+  const domRef = useRef<any>(null)
+  //自定义hooks
+  const { useMemoArr, setStatus, movie, setMovie } = useData()
+  //熟悉useSize
+  const size = useSize(domRef)
+  console.log('size', size)
+
   return (
     <>
-      <div className="movie">{movie}</div>
-      <StyledComp>
-        <div
-          className={cn('test', {
-            'active-class': true,
-            'non-active': false
-          })}
-        ></div>
-      </StyledComp>
+      <div className={Styles['movie']}>
+        <div className={cn(Styles['movie-item'], { [Styles.active]: true })}></div>
+      </div>
+      <div className={Styles.movie2} ref={domRef}></div>
+      <StyleComp>
+        <div className="sc-item">111</div>
+      </StyleComp>
+      <div></div>
+      <div>
+        <button onClick={() => setMovie('蝙蝠侠')}>切换</button>
+      </div>
+      <p>{movie}</p>
+      <div>
+        <button onClick={() => setStatus('否')}>筛选</button>
+      </div>
+      {useMemoArr.map((item, index) => (
+        <div key={index} className={Styles['list-item']}>
+          {item}
+        </div>
+      ))}
     </>
   )
 }
 
-const StyledComp = styled.div`
-  height: 56px;
-  background-color: pink;
+const StyleComp = styled.div`
+  height: 100px;
+  background-color: green;
+  position: sticky;
   display: flex;
-  .test {
-    width: 30px;
-    background-color: green;
-    &.active-class {
-      background-color: blue;
-    }
+  overflow: hidden;
+  .sc-item {
+    width: 40px;
+    background-color: yellowgreen;
   }
 `
+
 export default Movie
