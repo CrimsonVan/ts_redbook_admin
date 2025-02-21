@@ -128,6 +128,7 @@ const Message = () => {
       ...formData,
       pagenum: 1
     })
+    setCurrentPage(1)
   }
   return (
     <>

@@ -101,7 +101,6 @@ const Users = () => {
   })
   //修改页数并获取数据
   const handlePageChange = (p: any) => {
-    console.log('打印p', p)
     setReqQuery({ ...reqQuery, pagenum: p })
   }
   //用户列表

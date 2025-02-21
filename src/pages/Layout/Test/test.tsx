@@ -1,9 +1,10 @@
 import { Space, Table, Popconfirm, Select, Input, message, Button } from 'antd'
 import type { TableProps } from 'antd'
 import { getPostService, delPostService, updatePostService } from '../../../api/post'
-import { getPostCateService } from '../../../api/cate'
 import { useState, useEffect, useRef } from 'react'
 import PostDetail from '../../../components/postDetail'
+import { useTest } from './myHooks'
+import cn from 'classnames'
 const PostTable = () => {
   const postColumns: TableProps<any>['columns'] = [
     {
@@ -68,18 +69,18 @@ const PostTable = () => {
       title: '操作',
       key: 'action',
       render: (row) => {
-        let text = row.status === '未通过' ? 'pass' : 'unpass'
+        let text = row.status === '未通过' ? '通过' : '不通过'
         return (
           <Space size="middle">
-            <a onClick={() => showSonComp(row)}>view</a>
+            <a onClick={() => showSonComp(row)}>查看</a>
             <Popconfirm
-              title="Delete the task"
-              description="Are you sure to delete this task?"
-              okText="Yes"
-              cancelText="No"
+              title="Warning"
+              description="确定要删除这个贴文吗？"
+              okText="确认"
+              cancelText="取消"
               onConfirm={() => removeItem(row)}
             >
-              <a>Delete</a>
+              <a>删除</a>
             </Popconfirm>
             <Popconfirm
               title="Delete the task"
@@ -99,6 +100,20 @@ const PostTable = () => {
   const [formData, setFormData] = useState({})
   //当前页数
   const [currentPage, setCurrentPage] = useState(1)
+  //测试自定义hooks
+  const { c } = useTest()
+  console.log('打印自定义hooks', c)
+  //测试classnames
+  const isActive = false
+  const hasError = true
+
+  const inputClass = cn({
+    input: true,
+    'input--active': isActive,
+    'input--error': hasError
+  })
+  console.log(inputClass) // 'input input--active'
+
   //table分页所需参数
   const paginationProps = {
     pageSize: 8, // 每页数据条数
@@ -133,14 +148,6 @@ const PostTable = () => {
     setReqQuery({ ...reqQuery, pagenum: p })
     setCurrentPage(p)
   }
-  //获取分类
-  useEffect(() => {
-    const getCate = async () => {
-      let res = await getPostCateService({ pagenum: 1 })
-      console.log('获取cate', res.data.data)
-    }
-    getCate()
-  }, [])
   //获取贴文数据
   useEffect(() => {
     //获取帖子列表
@@ -151,6 +158,8 @@ const PostTable = () => {
         item.preContent = item.content.slice(0, 8) + '...'
       })
       console.log('帖子数量', res.data.data)
+      // console.log('测试useSetState', ahooks)
+      // console.log('测试useToggle', state)
       setPostArr(res.data.data)
     }
     getPostList()
@@ -163,12 +172,12 @@ const PostTable = () => {
   }
   //点击查询操作
   const finish = () => {
-    console.log('打印formData', formData)
     setReqQuery({
       ...reqQuery,
       ...formData,
       pagenum: 1
     })
+    setCurrentPage(1)
   }
 
   return (

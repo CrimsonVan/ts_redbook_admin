@@ -41,17 +41,12 @@ const items: MenuItem[] = [
     getItem('贴文审核', '/postpass'),
     getItem('贴文分类', '/postcate')
   ]),
-  getItem('用户管理', 'sub2', <TeamOutlined />, [
-    getItem('信息审核', '/users'),
-    getItem('Team 2', '8')
-  ]),
-  getItem('消息管理', 'sub3', <FileOutlined />, [
-    getItem('评论管理', '/message'),
-    getItem('Team 3', '10')
-  ])
+  getItem('用户管理', 'sub2', <TeamOutlined />, [getItem('信息审核', '/users')]),
+  getItem('消息管理', 'sub3', <FileOutlined />, [getItem('评论管理', '/message')])
 ]
 
 const LayoutPage: React.FC = () => {
+  // const history = useHistory()
   console.log('打印持久化token', getPersistToken())
   const [breadList, setBreadList] = useState<Array<any>>([
     {
@@ -93,6 +88,7 @@ const LayoutPage: React.FC = () => {
     }
     getBreadArr(e.keyPath.reverse())
     navigate(e.key)
+    // history.push(e.key)
   }
   return (
     <Layout style={{ minHeight: '100vh' }}>

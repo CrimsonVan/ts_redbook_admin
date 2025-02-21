@@ -13,7 +13,6 @@ const PostDetail = ({ updateStatus }: any, ref: any) => {
   const [curPost, setCurPost] = useState<any>()
   //显示弹窗操作
   const showModal = (post: any) => {
-    console.log('打印view的post', post)
     setCurPost(post)
     setIsModalOpen(true)
   }
@@ -24,7 +23,6 @@ const PostDetail = ({ updateStatus }: any, ref: any) => {
   }
   //修改贴文状态为未通过
   const handleCancel = () => {
-    console.log('cancel')
     setIsModalOpen(false)
   }
 
