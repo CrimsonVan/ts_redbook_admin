@@ -101,7 +101,21 @@ export function useData() {
   //   console.log(`测试useMemoizedFn成功`)
   // })
 
+  //所有选项
+  const allOptions = [
+    { label: 'A', value: 'A' },
+    { label: 'B', value: 'B' },
+    { label: 'C', value: 'C' },
+    { label: 'D', value: 'D' },
+    { label: 'E', value: 'E' },
+    { label: 'F', value: 'F' }
+  ]
+  //默认选项
+  const defaultCheckedList = ['A', 'B', 'C']
+
   return {
+    allOptions,
+    defaultCheckedList,
     useMemoArr,
     setStatus,
     movie,

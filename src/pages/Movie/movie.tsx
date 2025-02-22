@@ -6,6 +6,7 @@ import { useSize, useFullscreen } from 'ahooks'
 import { useEffect, useRef } from 'react'
 import MovieChild from './components/movieChild'
 import PaginationComp from '../../global/myAntd/PaginationCom'
+import CheckBoxGroup from '../../global/myAntd/CheckboxComp'
 function Movie() {
   //熟悉useRef
   const domRef = useRef<any>(null)
@@ -17,6 +18,8 @@ function Movie() {
   })
   //测试自定义hooks
   const {
+    allOptions,
+    defaultCheckedList,
     userInfo,
     useMemoArr,
     setStatus,
@@ -45,13 +48,21 @@ function Movie() {
       <div className={Styles.movie}>
         <div className={cn(Styles['movie-item'], { [Styles.active]: true })}></div>
       </div>
-      <div>
-        <div className={Styles.movie2} ref={fullScreenDom}>
-          {isFullscreen ? '全屏中' : '不在全屏中'}
-          <button onClick={toggleFullscreen}>切换全屏</button>
-        </div>
+
+      <div className={Styles.movie2} ref={fullScreenDom}>
+        {isFullscreen ? '全屏中' : '不在全屏中'}
+        <button onClick={toggleFullscreen}>切换全屏</button>
       </div>
 
+      <CheckBoxGroup
+        type="link"
+        boxOptions={allOptions}
+        defaultCheckedList={defaultCheckedList}
+        isTitle={false}
+        onFinished={(e: any) => {
+          console.log('确认后的回调', e)
+        }}
+      />
       <StyleComp>
         <div className="sc-item">{userInfo.id}</div>
         <MovieChild
