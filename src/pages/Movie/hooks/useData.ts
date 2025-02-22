@@ -22,6 +22,12 @@ export function useData() {
     manual: true,
     onSuccess: (res) => {
       console.log('获取异步数据成功', res)
+    },
+    onBefore: () => {
+      console.log('获取异步数据之前的回调')
+    },
+    onFinally: () => {
+      console.log('获取异步数据结束的回调')
     }
   })
 
