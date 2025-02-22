@@ -2,14 +2,19 @@ import Styles from './movie.module.less'
 import styled from 'styled-components'
 import cn from 'classnames'
 import { useData } from './hooks/useData'
-import { useSize } from 'ahooks'
+import { useSize, useFullscreen } from 'ahooks'
 import { useEffect, useRef } from 'react'
 import MovieChild from './components/movieChild'
 import PaginationComp from '../../global/myAntd/PaginationCom'
 function Movie() {
   //熟悉useRef
   const domRef = useRef<any>(null)
-
+  //需要全屏的Dom
+  const fullScreenDom = useRef<any>(null)
+  //熟悉useFullscreen
+  const [isFullscreen, { toggleFullscreen }] = useFullscreen(fullScreenDom, {
+    pageFullscreen: true
+  })
   //测试自定义hooks
   const {
     userInfo,
@@ -40,7 +45,13 @@ function Movie() {
       <div className={Styles.movie}>
         <div className={cn(Styles['movie-item'], { [Styles.active]: true })}></div>
       </div>
-      <div className={Styles.movie2} ref={domRef}></div>
+      <div>
+        <div className={Styles.movie2} ref={fullScreenDom}>
+          {isFullscreen ? '全屏中' : '不在全屏中'}
+          <button onClick={toggleFullscreen}>切换全屏</button>
+        </div>
+      </div>
+
       <StyleComp>
         <div className="sc-item">{userInfo.id}</div>
         <MovieChild
