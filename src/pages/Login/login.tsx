@@ -6,7 +6,6 @@ import { userLoginService } from '../../api/user'
 import { useDispatch } from 'react-redux'
 import { setToken, getUserInfo } from '../../store/modules/todollist'
 import { useNavigate } from 'react-router-dom'
-// import { getPersistToken } from '../../utils/token'
 const Login: React.FC = () => {
   const navigate = useNavigate()
   const dispatch: any = useDispatch()
@@ -19,7 +18,6 @@ const Login: React.FC = () => {
     dispatch(setToken(res.data.token))
     // const token = useSelector((state: any) => state.todoStore.token)
     // console.log('打印token是否延迟', token)
-
     await dispatch(getUserInfo(values.username))
 
     navigate('/')

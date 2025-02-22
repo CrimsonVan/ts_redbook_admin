@@ -1,5 +1,5 @@
 import { Modal } from 'antd'
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import React, { useImperativeHandle } from 'react'
 import { Input, message } from 'antd'
 import { useSelector } from 'react-redux'
@@ -83,4 +83,4 @@ const CateEditAdd = ({ getCateList, reqQuery, changePage }: any, ref: any) => {
     </Modal>
   )
 }
-export default React.forwardRef(CateEditAdd)
+export default memo(React.forwardRef(CateEditAdd))
