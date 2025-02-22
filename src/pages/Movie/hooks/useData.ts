@@ -1,9 +1,14 @@
 import { useEffect, useMemo, useCallback } from 'react'
 import { produce } from 'immer'
 import { useRequest, useToggle, useMemoizedFn } from 'ahooks'
+import { useSelector } from 'react-redux'
+// import { useMyCallBack } from '../../../utils/ahooks/myUseCallback'
 export function useData() {
   const [movie, { toggle: setMovie }] = useToggle('超人', '蝙蝠侠')
   const [status, { toggle: setStatus }] = useToggle('是', '否') //筛选条件
+  const userInfo = useSelector((state: any) => state.todoStore.userInfo) //状态管理仓库获取状态
+
+  //模拟异步任务
   function getUsername(): Promise<string> {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -39,16 +44,21 @@ export function useData() {
   //熟悉useMemo
   //useMemo可以缓存计算结果，重新渲染时不再计算，减少性能损耗
   const useMemoArr = useMemo(() => {
-    //模拟极慢的代码
-    // let startTime = performance.now()
-    // while (performance.now() - startTime < 500) {
-    //   // 在 500 毫秒内不执行任何操作以模拟极慢的代码
-    // }
+    console.log('开始状态的计算')
     const arr = ['是', '否', '是', '否']
     return arr.filter((item) => item === status)
   }, [status])
 
+  //不使用useMemo时
+  // function test1() {
+  //   console.log('开始状态的计算')
+  //   const arr = ['是', '否', '是', '否']
+  //   return arr.filter((item) => item === status)
+  // }
+  // const useMemoArr = test1()
+
   //熟悉useCallback
+  //根据依赖项，缓存代码执行后生成的函数，减少性能损耗
   const testUseCallback = useCallback(() => {
     let startTime = performance.now()
     while (performance.now() - startTime < 500) {
@@ -67,6 +77,7 @@ export function useData() {
   // }
 
   //熟悉useMemoizedFn
+  //缓存代码执行后生成的函数，减少性能损耗
   const testUseMemoizedFn = useMemoizedFn(() => {
     let startTime = performance.now()
     while (performance.now() - startTime < 500) {
@@ -74,5 +85,24 @@ export function useData() {
     }
     console.log(`测试useMemoizedFn成功`)
   })
-  return { useMemoArr, setStatus, movie, setMovie, runAsync, testUseCallback, testUseMemoizedFn }
+
+  //测试二次封装的useCallback，模拟useMemoizedFn
+  // const testUseMemoizedFn = useMyCallBack(() => {
+  //   let startTime = performance.now()
+  //   while (performance.now() - startTime < 500) {
+  //     // 在 500 毫秒内不执行任何操作以模拟极慢的代码
+  //   }
+  //   console.log(`测试useMemoizedFn成功`)
+  // })
+
+  return {
+    useMemoArr,
+    setStatus,
+    movie,
+    setMovie,
+    runAsync,
+    testUseCallback,
+    testUseMemoizedFn,
+    userInfo
+  }
 }

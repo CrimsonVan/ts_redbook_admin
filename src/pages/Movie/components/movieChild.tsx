@@ -1,12 +1,6 @@
 import Styles from './movieChild.module.less'
 import { memo } from 'react'
-function MovieChild({
-  testUseCallback,
-  testUseMemoizedFn
-}: {
-  testUseCallback: any
-  testUseMemoizedFn: any
-}) {
+function MovieChild({ testUseCallback, testUseMemoizedFn }: any) {
   console.log('子组件MovieChild渲染')
   return (
     <>

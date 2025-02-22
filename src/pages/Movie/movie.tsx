@@ -3,17 +3,32 @@ import styled from 'styled-components'
 import cn from 'classnames'
 import { useData } from './hooks/useData'
 import { useSize } from 'ahooks'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import MovieChild from './components/movieChild'
+
 function Movie() {
-  //useRef
+  //熟悉useRef
   const domRef = useRef<any>(null)
-  //自定义hooks
-  const { useMemoArr, setStatus, movie, setMovie, runAsync, testUseCallback, testUseMemoizedFn } =
-    useData()
+
+  //测试自定义hooks
+  const {
+    userInfo,
+    useMemoArr,
+    setStatus,
+    movie,
+    setMovie,
+    runAsync,
+    testUseCallback,
+    testUseMemoizedFn
+  } = useData()
+
   //熟悉useSize
   const size = useSize(domRef)
-  console.log('size', size)
+  useEffect(() => {
+    if (size) {
+      console.log('测试useSize和dom', size, domRef.current)
+    }
+  }, [domRef.current])
 
   return (
     <>
@@ -22,7 +37,7 @@ function Movie() {
       </div>
       <div className={Styles.movie2} ref={domRef}></div>
       <StyleComp>
-        <div className="sc-item">111</div>
+        <div className="sc-item">{userInfo.id}</div>
         <MovieChild
           testUseCallback={testUseCallback}
           testUseMemoizedFn={testUseMemoizedFn}
