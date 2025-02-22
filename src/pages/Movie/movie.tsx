@@ -5,7 +5,7 @@ import { useData } from './hooks/useData'
 import { useSize } from 'ahooks'
 import { useEffect, useRef } from 'react'
 import MovieChild from './components/movieChild'
-
+import PaginationComp from '../../global/myAntd/PaginationCom'
 function Movie() {
   //熟悉useRef
   const domRef = useRef<any>(null)
@@ -29,6 +29,11 @@ function Movie() {
       console.log('测试useSize和dom', size, domRef.current)
     }
   }, [domRef.current])
+
+  //二次封装的antd的回调
+  function onChange(page_num: number) {
+    console.log('测试二次封装antd回调', page_num)
+  }
 
   return (
     <>
@@ -61,6 +66,7 @@ function Movie() {
           {item}
         </div>
       ))}
+      <PaginationComp pageSize={8} total={99} onChange={onChange}></PaginationComp>
     </>
   )
 }
