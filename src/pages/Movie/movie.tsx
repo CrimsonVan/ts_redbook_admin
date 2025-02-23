@@ -2,14 +2,14 @@ import Styles from './movie.module.less'
 import styled from 'styled-components'
 import cn from 'classnames'
 import { useData } from './hooks/useData'
-import { useSize, useFullscreen } from 'ahooks'
+import { useFullscreen } from 'ahooks'
 import { useEffect, useRef } from 'react'
 import MovieChild from './components/movieChild'
 import PaginationComp from '../../global/myAntd/PaginationCom'
 import CheckBoxGroup from '../../global/myAntd/CheckboxComp'
+import { useClickOutside } from '../../global/myHooks/useClickOutside'
 function Movie() {
-  //熟悉useRef
-  const domRef = useRef<any>(null)
+  //isOpen
   //需要全屏的Dom
   const fullScreenDom = useRef<any>(null)
   //熟悉useFullscreen
@@ -27,22 +27,25 @@ function Movie() {
     setMovie,
     runAsync,
     testUseCallback,
-    testUseMemoizedFn
+    testUseMemoizedFn,
+    open,
+    setOpen
   } = useData()
 
-  //熟悉useSize
-  const size = useSize(domRef)
   useEffect(() => {
-    if (size) {
-      console.log('测试useSize和dom', size, domRef.current)
-    }
-  }, [domRef.current])
+    console.log('获取dom', fullScreenDom.current.clientHeight)
+  }, [])
 
   //二次封装的antd的回调
   function onChange(page_num: number) {
     console.log('测试二次封装antd回调', page_num)
   }
-
+  //dom
+  const btnDom = useRef(null)
+  //点击dom外触发事件得到钩子
+  useClickOutside(btnDom, () => {
+    setOpen(false)
+  })
   return (
     <>
       <div className={Styles.movie}>
@@ -89,6 +92,10 @@ function Movie() {
         </div>
       ))}
       <PaginationComp pageSize={8} total={99} onChange={onChange}></PaginationComp>
+      <button ref={btnDom} onClick={() => setOpen(true)}>
+        open
+      </button>
+      {open && <div>弹窗</div>}
     </>
   )
 }

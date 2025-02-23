@@ -35,7 +35,7 @@ const PostDetail = ({ updateStatus }: any, ref: any) => {
       open={isModalOpen}
       onOk={handleOk}
       onCancel={handleCancel}
-      maskClosable={true}
+      maskClosable={false}
     >
       <div className="post_detail">
         <div className="header">

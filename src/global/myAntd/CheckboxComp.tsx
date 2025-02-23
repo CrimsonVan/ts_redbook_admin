@@ -21,10 +21,10 @@ interface boxProps {
 export default function CheckBoxGroup({
   defaultCheckedList,
   boxOptions = [],
-  onFinished,
-  type = 'button',
+  listOptions = [],
   isTitle = false,
-  listOptions = []
+  onFinished,
+  type = 'button'
 }: boxProps) {
   const [open, setOpen] = useState(false) //是否打开弹窗
   const [allOptions, setAllOptions] = useState<any>([]) //所有选项
@@ -38,7 +38,6 @@ export default function CheckBoxGroup({
         type="primary"
         style={{ width: '113px', fontSize: '12px', padding: '4px 7px' }}
       >
-        {' '}
         选择数据指标（{checkedList.length}）
       </Button>
     ),
@@ -56,8 +55,11 @@ export default function CheckBoxGroup({
   }
 
   useEffect(() => {
+    if (!open) {
+      return
+    }
     let new_allOptions: any[] = []
-    // 是否有副标题
+    // 是否需要副标题
     if (isTitle) {
       //listOptions
       listOptions.forEach((item) => {
@@ -68,10 +70,10 @@ export default function CheckBoxGroup({
       setAllOptions(new_allOptions)
     } else {
       // allOptions
-      boxOptions.map((item) => new_allOptions.push(item.value))
+      boxOptions.forEach((item) => new_allOptions.push(item.value))
       setAllOptions(new_allOptions)
     }
-  }, [])
+  }, [open])
 
   //是否全选属性
   const checkAll = useMemo(

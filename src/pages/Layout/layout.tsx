@@ -87,13 +87,13 @@ const LayoutPage: React.FC = () => {
       ])
     }
     getBreadArr(e.keyPath.reverse())
-    navigate(e.key)
+    navigate(`${e.key}`)
     // history.push(e.key)
   }
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsed={collapsed}>
-        <div className="demo-logo-vertical">小红书</div>
+        <div className="demo-logo-vertical">小番茄</div>
         <Menu
           onClick={onClick}
           theme="dark"

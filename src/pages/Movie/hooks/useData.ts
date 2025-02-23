@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useCallback } from 'react'
+import { useEffect, useMemo, useCallback, useState } from 'react'
 import { produce } from 'immer'
 import { useRequest, useToggle, useMemoizedFn } from 'ahooks'
 import { useSelector } from 'react-redux'
@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 export function useData() {
   const [movie, { toggle: setMovie }] = useToggle('超人', '蝙蝠侠')
   const [status, { toggle: setStatus }] = useToggle('是', '否') //筛选条件
+  const [open, setOpen] = useState(false)
   const userInfo = useSelector((state: any) => state.todoStore.userInfo) //状态管理仓库获取状态
 
   //模拟异步任务
@@ -123,6 +124,8 @@ export function useData() {
     runAsync,
     testUseCallback,
     testUseMemoizedFn,
-    userInfo
+    userInfo,
+    open,
+    setOpen
   }
 }
