@@ -42,8 +42,10 @@ function Movie() {
   }
   //dom
   const btnDom = useRef(null)
+  //winDom
+  const winDom = useRef(null)
   //点击dom外触发事件得到钩子
-  useClickOutside(btnDom, () => {
+  useClickOutside(btnDom, winDom, () => {
     setOpen(false)
   })
   return (
@@ -95,7 +97,7 @@ function Movie() {
       <button ref={btnDom} onClick={() => setOpen(true)}>
         open
       </button>
-      {open && <div>弹窗</div>}
+      {open && <PopComp ref={winDom}>弹窗</PopComp>}
     </>
   )
 }
@@ -111,5 +113,14 @@ const StyleComp = styled.div`
     background-color: yellowgreen;
   }
 `
-
+const PopComp = styled.div`
+  width: 170px;
+  height: 100px;
+  background-color: palegoldenrod;
+  box-sizing: border-box;
+  border: 1px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 export default Movie

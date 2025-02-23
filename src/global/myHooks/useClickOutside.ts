@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
-export function useClickOutside(dom: any, cb: any) {
+export function useClickOutside(dom: any, winDom: any, cb: any) {
   useEffect(() => {
     const handle = function (e: any) {
-      if (e.target !== dom.current) {
+      if (e.target !== dom.current && e.target !== winDom.current) {
         cb()
       }
     }
