@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo } from 'react'
 import { SettingOutlined } from '@ant-design/icons'
 
 interface boxProps {
+  theme?: string
   boxOptions?: { label: string; value: any }[] //所有指标
   defaultCheckedList: any[] //上次选择之后记录的指标
   onFinished: any //确认
@@ -24,12 +25,12 @@ export default function CheckBoxGroup({
   listOptions = [],
   isTitle = false,
   onFinished,
-  type = 'button'
+  type = 'button',
+  theme = '#666FFF'
 }: boxProps) {
-  const [open, setOpen] = useState(false) //是否打开弹窗
+  const [open, setOpen] = useState<boolean>(false) //是否打开弹窗
   const [allOptions, setAllOptions] = useState<any>([]) //所有选项
   const [checkedList, setCheckedList] = useState<any>(defaultCheckedList) //已选的所有选项
-
   const Operation = {
     button: (
       <Button
@@ -46,7 +47,7 @@ export default function CheckBoxGroup({
         onClick={() => setOpen(true)}
         id="groupCheckbox"
         type="link"
-        style={{ width: '113px', fontSize: '14px', padding: '4px 7px' }}
+        style={{ width: '113px', fontSize: '14px', padding: '4px 7px', color: theme }}
         icon={<SettingOutlined />}
       >
         列表配置
@@ -58,7 +59,7 @@ export default function CheckBoxGroup({
     if (!open) {
       return
     }
-    let new_allOptions: any[] = []
+    let new_allOptions: any = []
     // 是否需要副标题
     if (isTitle) {
       //listOptions
@@ -126,7 +127,7 @@ export default function CheckBoxGroup({
               全选
             </Checkbox>
             <div style={{ color: '#c2c2c2' }}>
-              （<span style={{ color: '#666FFF' }}>{checkedList.length}</span> / {allOptions.length}
+              （<span style={{ color: theme }}>{checkedList.length}</span> / {allOptions.length}
               已选）
             </div>
             <Button type="link" onClick={() => setCheckedList([])}>
@@ -140,6 +141,7 @@ export default function CheckBoxGroup({
           {/* 选项 */}
           <Checkbox.Group value={checkedList} style={{ width: '100%' }} onChange={onGroupChange}>
             {!isTitle ? (
+              //无小标题
               <Row>
                 {(boxOptions || []).map((item, index) => {
                   return (
@@ -150,6 +152,7 @@ export default function CheckBoxGroup({
                 })}
               </Row>
             ) : (
+              //有小标题
               listOptions.map((item, index) => {
                 return (
                   <div key={index} style={{ display: 'flex', width: '100%' }}>

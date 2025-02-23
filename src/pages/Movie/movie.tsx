@@ -3,13 +3,12 @@ import styled from 'styled-components'
 import cn from 'classnames'
 import { useData } from './hooks/useData'
 import { useFullscreen } from 'ahooks'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import MovieChild from './components/movieChild'
 import PaginationComp from '../../global/myAntd/PaginationCom'
 import CheckBoxGroup from '../../global/myAntd/CheckboxComp'
 import { useClickOutside } from '../../global/myHooks/useClickOutside'
 function Movie() {
-  //isOpen
   //需要全屏的Dom
   const fullScreenDom = useRef<any>(null)
   //熟悉useFullscreen
@@ -31,10 +30,6 @@ function Movie() {
     open,
     setOpen
   } = useData()
-
-  useEffect(() => {
-    console.log('获取dom', fullScreenDom.current.clientHeight)
-  }, [])
 
   //二次封装的antd的回调
   function onChange(page_num: number) {
@@ -60,7 +55,7 @@ function Movie() {
       </div>
 
       <CheckBoxGroup
-        type="link"
+        type="button"
         boxOptions={allOptions}
         defaultCheckedList={defaultCheckedList}
         isTitle={false}
@@ -68,6 +63,7 @@ function Movie() {
           console.log('确认后的回调', e)
         }}
       />
+
       <StyleComp>
         <div className="sc-item">{userInfo.id}</div>
         <MovieChild
@@ -75,6 +71,7 @@ function Movie() {
           testUseMemoizedFn={testUseMemoizedFn}
         ></MovieChild>
       </StyleComp>
+
       <div>
         <button onClick={() => testUseCallback()}>useCallback</button>
       </div>
@@ -97,12 +94,16 @@ function Movie() {
       <button ref={btnDom} onClick={() => setOpen(true)}>
         open
       </button>
-      {open && <PopComp ref={winDom}>弹窗</PopComp>}
+      {open && (
+        <PopComp ref={winDom} width="400px">
+          弹窗
+        </PopComp>
+      )}
     </>
   )
 }
 
-const StyleComp = styled.div`
+const StyleComp: any = styled.div`
   height: 100px;
   background-color: green;
   position: sticky;
@@ -113,9 +114,9 @@ const StyleComp = styled.div`
     background-color: yellowgreen;
   }
 `
-const PopComp = styled.div`
-  width: 170px;
+const PopComp: any = styled.div`
   height: 100px;
+  width: ${(props: any) => props.width || '150px'};
   background-color: palegoldenrod;
   box-sizing: border-box;
   border: 1px solid #000;
