@@ -2,11 +2,14 @@ import { useEffect, useMemo, useCallback, useState } from 'react'
 import { produce } from 'immer'
 import { useRequest, useToggle, useMemoizedFn } from 'ahooks'
 import { useSelector } from 'react-redux'
+import dayjs from 'dayjs'
+import { useParams } from 'react-router-dom'
 // import { useMyCallBack } from '../../../utils/ahooks/myUseCallback'
 export function useData() {
   const [movie, { toggle: setMovie }] = useToggle('超人', '蝙蝠侠')
   const [status, { toggle: setStatus }] = useToggle('是', '否') //筛选条件
   const [open, setOpen] = useState(false)
+  const { path } = useParams()
   const userInfo = useSelector((state: any) => state.todoStore.userInfo) //状态管理仓库获取状态
 
   //模拟异步任务
@@ -33,6 +36,9 @@ export function useData() {
   })
 
   useEffect(() => {
+    console.log('useParams', path)
+    //dayjs
+    console.log('测试dayjs', dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss'))
     //熟悉immer拷贝
     const data1 = {
       done: false,
