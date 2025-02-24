@@ -1,28 +1,27 @@
-import { useEffect, useMemo, useCallback, useState } from 'react'
+import { useEffect, useMemo, useCallback, useState, useRef } from 'react'
 import { produce } from 'immer'
 import { useRequest, useToggle, useMemoizedFn } from 'ahooks'
 import { useSelector } from 'react-redux'
-import dayjs from 'dayjs'
-import { useParams } from 'react-router-dom'
+// import { omit } from 'lodash'
 // import { useMyCallBack } from '../../../utils/ahooks/myUseCallback'
 export function useData() {
   const [movie, { toggle: setMovie }] = useToggle('超人', '蝙蝠侠')
   const [status, { toggle: setStatus }] = useToggle('是', '否') //筛选条件
   const [open, setOpen] = useState(false)
-  const { path } = useParams()
+  // const { path } = useParams()
   const userInfo = useSelector((state: any) => state.todoStore.userInfo) //状态管理仓库获取状态
-
+  const testRef = useRef('1')
   //模拟异步任务
   function getUsername(): Promise<string> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve('jackMa')
-      }, 1000)
+      }, 3000)
     })
   }
 
   //熟悉useRequest获取异步数据
-  const { run: runAsync } = useRequest(getUsername, {
+  const { run: runAsync, loading } = useRequest(getUsername, {
     manual: true,
     onSuccess: (res) => {
       console.log('获取异步数据成功', res)
@@ -36,9 +35,95 @@ export function useData() {
   })
 
   useEffect(() => {
-    console.log('useParams', path)
-    //dayjs
-    console.log('测试dayjs', dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss'))
+    //slice
+    const arr = [1, 2, 3]
+    console.log('slice只传一个参数', arr.slice(2))
+
+    //lodash的omit
+    // let obj = {
+    //   a: 1,
+    //   b: 2,
+    //   c: 3,
+    //   d: 4
+    // }
+
+    // console.log('测试lodash的omit', omit(obj, 'a'), obj)
+    const columns: any[] = [
+      {
+        title: 'Full Name',
+        width: 100,
+        dataIndex: 'name',
+        key: 'name',
+        fixed: 'left'
+      },
+      {
+        title: 'Age',
+        width: 100,
+        dataIndex: 'age',
+        key: 'age',
+        fixed: 'left'
+      },
+      {
+        title: 'Column 1',
+        dataIndex: 'address',
+        key: '1',
+        width: 150
+      },
+      {
+        title: 'Column 2',
+        dataIndex: 'address',
+        key: '2',
+        width: 150
+      },
+      {
+        title: 'Column 3',
+        dataIndex: 'address',
+        key: '3',
+        width: 150
+      },
+      {
+        title: 'Column 4',
+        dataIndex: 'address',
+        key: '4',
+        width: 150
+      },
+      {
+        title: 'Column 5',
+        dataIndex: 'address',
+        key: '5',
+        width: 150
+      },
+      {
+        title: 'Column 6',
+        dataIndex: 'address',
+        key: '6',
+        width: 150
+      },
+      {
+        title: 'Column 7',
+        dataIndex: 'address',
+        key: '7',
+        width: 150
+      },
+      { title: 'Column 8', dataIndex: 'address', key: '8' },
+      {
+        title: 'Action',
+        key: 'operation',
+        fixed: 'right',
+        width: 100
+      }
+    ]
+    let scroll = columns.reduce(
+      (pre: any, cur: any) => {
+        if (cur.width) return { x: pre.x + Number(cur.width) }
+        else return pre
+      },
+      { x: 0 }
+    )
+    //!!
+    const isTrue = false
+    console.log('reduce', scroll, testRef.current, !!isTrue)
+
     //熟悉immer拷贝
     const data1 = {
       done: false,
@@ -132,6 +217,7 @@ export function useData() {
     testUseMemoizedFn,
     userInfo,
     open,
-    setOpen
+    setOpen,
+    loading
   }
 }

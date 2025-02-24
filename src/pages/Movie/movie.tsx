@@ -28,7 +28,8 @@ function Movie() {
     testUseCallback,
     testUseMemoizedFn,
     open,
-    setOpen
+    setOpen,
+    loading
   } = useData()
 
   //二次封装的antd的回调
@@ -71,7 +72,7 @@ function Movie() {
           testUseMemoizedFn={testUseMemoizedFn}
         ></MovieChild>
       </StyleComp>
-
+      <div>{loading ? 'loading中' : 'loading结束'}</div>
       <div>
         <button onClick={() => testUseCallback()}>useCallback</button>
       </div>
