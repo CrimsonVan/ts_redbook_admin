@@ -2,6 +2,7 @@ import { useEffect, useMemo, useCallback, useState } from 'react'
 import { produce } from 'immer'
 import { useRequest, useToggle, useMemoizedFn } from 'ahooks'
 import { useSelector } from 'react-redux'
+import { omit } from 'lodash'
 // import { useMyCallBack } from '../../../utils/ahooks/myUseCallback'
 export function useData() {
   const [movie, { toggle: setMovie }] = useToggle('超人', '蝙蝠侠')
@@ -33,6 +34,16 @@ export function useData() {
   })
 
   useEffect(() => {
+    //lodash的omit
+    let obj = {
+      a: 1,
+      b: 2,
+      c: 3,
+      d: 4
+    }
+
+    console.log('测试lodash的omit', omit(obj, 'a'), obj)
+
     //熟悉immer拷贝
     const data1 = {
       done: false,
