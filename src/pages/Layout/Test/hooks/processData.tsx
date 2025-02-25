@@ -3,6 +3,7 @@ import { useRequest } from 'ahooks'
 import { getPostService, delPostService, updatePostService } from '../../../../api/post'
 import type { TableProps } from 'antd'
 import { Space, Popconfirm, message } from 'antd'
+import { useLocation } from 'react-router-dom'
 export function useData({ dom }: any) {
   const postColumns: TableProps<any>['columns'] = [
     {
@@ -94,6 +95,10 @@ export function useData({ dom }: any) {
       }
     }
   ]
+  const { state } = useLocation()
+  useEffect(() => {
+    console.log('location的state', state)
+  }, [])
   //筛选参数对象
   const [formData, setFormData] = useState({})
   //当前页数

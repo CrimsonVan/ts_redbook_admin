@@ -8,7 +8,21 @@ import MovieChild from './components/movieChild'
 import PaginationComp from '../../global/myAntd/PaginationCom'
 import CheckBoxGroup from '../../global/myAntd/CheckboxComp'
 import { useClickOutside } from '../../global/myHooks/useClickOutside'
+import { Link } from 'react-router-dom'
+import { DatePicker } from 'antd'
+import dayjs from 'dayjs'
+const { RangePicker } = DatePicker
 function Movie() {
+  const dateFormat = 'YYYY-MM-DD'
+  console.log('打印dayjs', dayjs('2019-08-01', dateFormat))
+  // 限制日期函数
+  const disabledDate = (current: any) => {
+    return (
+      current &&
+      (current > dayjs('2020-12-01', dateFormat) || current < dayjs('2020-01-01', dateFormat))
+    )
+  }
+
   //需要全屏的Dom
   const fullScreenDom = useRef<any>(null)
   //熟悉useFullscreen
@@ -44,6 +58,13 @@ function Movie() {
   useClickOutside(btnDom, winDom, () => {
     setOpen(false)
   })
+  //日期选择
+  const change = (e: any) => {
+    console.log(
+      '打印所选择的日期',
+      e.map((item: any) => dayjs(item).format('YYYY-MM-DD'))
+    )
+  }
   return (
     <>
       <div className={Styles.movie}>
@@ -54,7 +75,9 @@ function Movie() {
         {isFullscreen ? '全屏中' : '不在全屏中'}
         <button onClick={toggleFullscreen}>切换全屏</button>
       </div>
-
+      <div>
+        <Link to="/test">state</Link>
+      </div>
       <CheckBoxGroup
         type="button"
         boxOptions={allOptions}
@@ -64,7 +87,6 @@ function Movie() {
           console.log('确认后的回调', e)
         }}
       />
-
       <StyleComp>
         <div className="sc-item">{userInfo.id}</div>
         <MovieChild
@@ -100,6 +122,9 @@ function Movie() {
           弹窗
         </PopComp>
       )}
+      <div>
+        <RangePicker onChange={change} disabledDate={disabledDate} />
+      </div>
     </>
   )
 }
