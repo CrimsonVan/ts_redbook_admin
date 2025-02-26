@@ -79,7 +79,7 @@ function Movie() {
       </div>
       <div>
         <CvButton>按 钮</CvButton>
-        <CvButton>按 钮</CvButton>
+        <CvButton type="primary">按 钮</CvButton>
         <CvButton>按 钮</CvButton>
         <CvButton>按 钮</CvButton>
         <CvButton>按 钮</CvButton>

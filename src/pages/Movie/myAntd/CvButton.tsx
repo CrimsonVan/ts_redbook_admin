@@ -7,8 +7,8 @@ export function CvButton({ children, type = 'default' }: any) {
       className={cn({
         'cv-btn': true,
         [`cv-btn-color-${type}`]: true,
-        'cv-btn-variant-outlined': true,
-        'cv-btn-color-default': true
+        'cv-btn-variant-outlined': type === 'default' ? true : false,
+        'cv-btn-variant-solid': type === 'default' ? false : true
       })}
     >
       {children}
