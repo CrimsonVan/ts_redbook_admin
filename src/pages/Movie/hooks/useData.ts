@@ -35,8 +35,11 @@ export function useData() {
 
   useEffect(() => {
     //slice
-    const arr = [1, 2, 3]
-    console.log('slice只传一个参数', arr.slice(2))
+    const arr: any[] = [1, 2, 3, 4]
+    let lastOne = arr[arr.length - 1]
+    arr.splice(arr.length - 1, 1)
+    arr.splice(2, 0, lastOne)
+    console.log('slice只传一个参数', arr)
 
     //lodash的omit
     // let obj = {
