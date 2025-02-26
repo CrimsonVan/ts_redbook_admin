@@ -2,14 +2,18 @@ import { useEffect, useMemo, useCallback, useState, useRef } from 'react'
 import { produce } from 'immer'
 import { useRequest, useToggle, useMemoizedFn } from 'ahooks'
 import { useSelector } from 'react-redux'
+import { useLocation, useParams } from 'react-router-dom'
 // import { omit } from 'lodash'
 // import { useMyCallBack } from '../../../utils/ahooks/myUseCallback'
 export function useData() {
   const [movie, { toggle: setMovie }] = useToggle('超人', '蝙蝠侠')
   const [status, { toggle: setStatus }] = useToggle('是', '否') //筛选条件
   const [open, setOpen] = useState(false)
+  // const { path } = useParams()
   const userInfo = useSelector((state: any) => state.todoStore.userInfo) //状态管理仓库获取状态
   const testRef = useRef('1')
+  const { state } = useLocation()
+  const params = useParams()
   //模拟异步任务
   function getUsername(): Promise<string> {
     return new Promise((resolve) => {
@@ -34,20 +38,13 @@ export function useData() {
   })
 
   useEffect(() => {
+    console.log('打印location里的state', state, params.id)
     //slice
     const arr: any[] = [1, 2, 3, 4]
     let lastOne = arr[arr.length - 1]
     arr.splice(arr.length - 1, 1)
     arr.splice(2, 0, lastOne)
     console.log('slice只传一个参数', arr)
-
-    //lodash的omit
-    // let obj = {
-    //   a: 1,
-    //   b: 2,
-    //   c: 3,
-    //   d: 4
-    // }
 
     // console.log('测试lodash的omit', omit(obj, 'a'), obj)
     const columns: any[] = [
@@ -64,57 +61,58 @@ export function useData() {
         dataIndex: 'age',
         key: 'age',
         fixed: 'left'
-      },
-      {
-        title: 'Column 1',
-        dataIndex: 'address',
-        key: '1',
-        width: 150
-      },
-      {
-        title: 'Column 2',
-        dataIndex: 'address',
-        key: '2',
-        width: 150
-      },
-      {
-        title: 'Column 3',
-        dataIndex: 'address',
-        key: '3',
-        width: 150
-      },
-      {
-        title: 'Column 4',
-        dataIndex: 'address',
-        key: '4',
-        width: 150
-      },
-      {
-        title: 'Column 5',
-        dataIndex: 'address',
-        key: '5',
-        width: 150
-      },
-      {
-        title: 'Column 6',
-        dataIndex: 'address',
-        key: '6',
-        width: 150
-      },
-      {
-        title: 'Column 7',
-        dataIndex: 'address',
-        key: '7',
-        width: 150
-      },
-      { title: 'Column 8', dataIndex: 'address', key: '8' },
-      {
-        title: 'Action',
-        key: 'operation',
-        fixed: 'right',
-        width: 100
       }
+      // {
+      //   title: 'Column 1',
+      //   dataIndex: 'address',
+      //   key: '1',
+      //   width: 150
+      // },
+      // {
+      //   title: 'Column 2',
+      //   dataIndex: 'address',
+      //   key: '2',
+      //   width: 150
+      // },
+      // {
+      //   title: 'Column 3',
+      //   dataIndex: 'address',
+      //   key: '3',
+      //   width: 150
+      // },
+      // {
+      //   title: 'Column 4',
+      //   dataIndex: 'address',
+      //   key: '4',
+      //   width: 150
+      // },
+      // {
+      //   title: 'Column 5',
+      //   dataIndex: 'address',
+      //   key: '5',
+      //   width: 150
+      // },
+      // {
+      //   title: 'Column 6',
+      //   dataIndex: 'address',
+      //   key: '6',
+      //   width: 150
+      // },
+      // {
+      //   title: 'Column 7',
+      //   dataIndex: 'address',
+      //   key: '7',
+      //   width: 150
+      // },
+      // { title: 'Column 8', dataIndex: 'address', key: '8' },
+      // {
+      //   title: 'Action',
+      //   key: 'operation',
+      //   fixed: 'right',
+      //   width: 100
+      // }
     ]
+
     let scroll = columns.reduce(
       (pre: any, cur: any) => {
         if (cur.width) return { x: pre.x + Number(cur.width) }
@@ -122,6 +120,7 @@ export function useData() {
       },
       { x: 0 }
     )
+
     //!!
     const isTrue = false
     console.log('reduce', scroll, testRef.current, !!isTrue)
@@ -134,9 +133,15 @@ export function useData() {
         name: 'lilei'
       }
     }
+
     const newData = produce(data1, (draft) => {
-      draft.child.name = 'jack'
+      Object.assign(draft, {
+        child: {
+          name: 'jack'
+        }
+      })
     })
+
     console.log('测试immer的深拷贝前', data1)
     console.log('测试immer的深拷贝后', newData)
   }, [])

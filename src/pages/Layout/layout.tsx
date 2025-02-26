@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Outlet, useNavigate, useLocation } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { clearToken, clearUserInfo } from '../../store/modules/todollist'
 import { getPersistToken } from '../../utils/token'
@@ -59,7 +59,6 @@ const LayoutPage: React.FC = () => {
   const userInfo = useSelector((state: any) => state.todoStore.userInfo)
   const [collapsed, setCollapsed] = useState<boolean>(false) //是否折叠导航菜单
   const navigate = useNavigate() //路由跳转
-  const location = useLocation() //获取当前路由
   const {
     token: { colorBgContainer }
   } = theme.useToken()
@@ -87,7 +86,11 @@ const LayoutPage: React.FC = () => {
       ])
     }
     getBreadArr(e.keyPath.reverse())
-    navigate(`${e.key}`)
+    navigate(`${e.key}`, {
+      state: {
+        id: 90
+      }
+    })
     // history.push(e.key)
   }
   return (
