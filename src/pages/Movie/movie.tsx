@@ -9,7 +9,8 @@ import PaginationComp from '../../global/myAntd/PaginationCom'
 import CheckBoxGroup from '../../global/myAntd/CheckboxComp'
 import { useClickOutside } from '../../global/myHooks/useClickOutside'
 import { Link } from 'react-router-dom'
-import { DatePicker } from 'antd'
+import { DatePicker, Button } from 'antd'
+import { CvButton } from './myAntd/cvButton'
 import dayjs from 'dayjs'
 const { RangePicker } = DatePicker
 function Movie() {
@@ -67,6 +68,22 @@ function Movie() {
   }
   return (
     <>
+      <div>
+        <Button>按钮</Button>
+        <Button type="primary">按钮</Button>
+        <Button danger>按钮</Button>
+        <Button type="primary" danger>
+          按钮
+        </Button>
+        <Button size="large">按钮</Button>
+      </div>
+      <div>
+        <CvButton>按 钮</CvButton>
+        <CvButton>按 钮</CvButton>
+        <CvButton>按 钮</CvButton>
+        <CvButton>按 钮</CvButton>
+        <CvButton>按 钮</CvButton>
+      </div>
       <div className={Styles.movie}>
         <div className={cn(Styles['movie-item'], { [Styles.active]: true })}></div>
       </div>
