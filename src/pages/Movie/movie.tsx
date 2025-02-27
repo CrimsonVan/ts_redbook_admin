@@ -10,7 +10,7 @@ import CheckBoxGroup from '../../global/myAntd/CheckboxComp'
 import { useClickOutside } from '../../global/myHooks/useClickOutside'
 import { Link } from 'react-router-dom'
 import { DatePicker, Button } from 'antd'
-import { CvButton } from './myAntd/cvButton'
+import { CvButton } from './myAntd/CvButton'
 import dayjs from 'dayjs'
 const { RangePicker } = DatePicker
 function Movie() {
@@ -69,20 +69,56 @@ function Movie() {
   return (
     <>
       <div>
-        <Button>按钮</Button>
+        <Button
+          onClick={() => {
+            console.log('antd按钮回调')
+          }}
+        >
+          按钮
+        </Button>
         <Button type="primary">按钮</Button>
         <Button danger>按钮</Button>
         <Button type="primary" danger>
           按钮
         </Button>
-        <Button size="large">按钮</Button>
+        <Button danger size="large">
+          按钮
+        </Button>
+        <Button type="primary" danger size="large">
+          按钮
+        </Button>
+        <Button danger size="small">
+          按钮
+        </Button>
+        <Button type="primary" danger size="small">
+          按钮
+        </Button>
       </div>
       <div>
-        <CvButton>按 钮</CvButton>
+        <CvButton
+          onClick={() => {
+            console.log('自定义按钮回调')
+          }}
+        >
+          按 钮
+        </CvButton>
         <CvButton type="primary">按 钮</CvButton>
-        <CvButton>按 钮</CvButton>
-        <CvButton>按 钮</CvButton>
-        <CvButton>按 钮</CvButton>
+        <CvButton danger>按 钮</CvButton>
+        <CvButton type="primary" danger>
+          按 钮
+        </CvButton>
+        <CvButton danger size="large">
+          按 钮
+        </CvButton>
+        <CvButton type="primary" danger size="large">
+          按 钮
+        </CvButton>
+        <CvButton danger size="small">
+          按 钮
+        </CvButton>
+        <CvButton type="primary" danger size="small">
+          按 钮
+        </CvButton>
       </div>
       <div className={Styles.movie}>
         <div className={cn(Styles['movie-item'], { [Styles.active]: true })}></div>
