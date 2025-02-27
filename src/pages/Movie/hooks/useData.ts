@@ -6,6 +6,7 @@ import { useLocation, useParams } from 'react-router-dom'
 // import { omit } from 'lodash'
 // import { useMyCallBack } from '../../../utils/ahooks/myUseCallback'
 export function useData() {
+  console.log('测试双感叹号语法', !!0, !!1)
   const [movie, { toggle: setMovie }] = useToggle('超人', '蝙蝠侠')
   const [status, { toggle: setStatus }] = useToggle('是', '否') //筛选条件
   const [open, setOpen] = useState(false)
