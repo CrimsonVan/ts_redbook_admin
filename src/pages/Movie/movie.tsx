@@ -11,10 +11,11 @@ import { useClickOutside } from '../../global/myHooks/useClickOutside'
 import { Link } from 'react-router-dom'
 import { DatePicker, Button } from 'antd'
 import { CvButton } from './myAntd/CvButton'
+import { cvMessage } from './myAntd/CvMessage'
 import dayjs from 'dayjs'
+import { message } from 'antd'
 const { RangePicker } = DatePicker
 function Movie() {
-  // console.log('打印dayjs', dayjs('2019-08-01', dateFormat))
   // 限制日期函数
   const disabledDate = (current: any) => {
     const dateFormat = 'YYYY-MM-DD'
@@ -23,7 +24,6 @@ function Movie() {
       (current > dayjs('2020-12-01', dateFormat) || current < dayjs('2020-01-01', dateFormat))
     )
   }
-
   //需要全屏的Dom
   const fullScreenDom = useRef<any>(null)
   //熟悉useFullscreen
@@ -66,12 +66,14 @@ function Movie() {
       e.map((item: any) => dayjs(item).format('YYYY-MM-DD'))
     )
   }
+
   return (
     <>
       <div>
+        <p>antd版:</p>
         <Button
           onClick={() => {
-            console.log('antd按钮回调')
+            message.info('手写版button回调', 300)
           }}
         >
           按钮
@@ -90,14 +92,16 @@ function Movie() {
         <Button danger size="small">
           按钮
         </Button>
-        <Button type="primary" danger size="small">
+        <Button type="primary" danger size="small" style={{ marginLeft: '10px' }}>
           按钮
         </Button>
       </div>
       <div>
+        <p>手写版：</p>
         <CvButton
           onClick={() => {
-            console.log('自定义按钮回调')
+            // message.info('手写版button回调', 300)
+            cvMessage.info('手写版全局提示')
           }}
         >
           按 钮
@@ -116,7 +120,7 @@ function Movie() {
         <CvButton danger size="small">
           按 钮
         </CvButton>
-        <CvButton type="primary" danger size="small">
+        <CvButton type="primary" danger size="small" style={{ marginLeft: '10px' }}>
           按 钮
         </CvButton>
       </div>
