@@ -69,8 +69,15 @@ function Movie() {
 
   return (
     <>
-      <div className={Styles.btnContainer}>
-        <Button type="primary">按钮</Button>
+      <div className={Styles.btnContainer} style={{ marginLeft: '50px', marginTop: '30px' }}>
+        <Button
+          type="primary"
+          onClick={() => {
+            message.success('成功')
+          }}
+        >
+          按钮
+        </Button>
       </div>
       <div>
         <p>antd版:</p>
