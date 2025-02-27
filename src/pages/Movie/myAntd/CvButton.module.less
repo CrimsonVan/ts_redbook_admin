@@ -1,0 +1,99 @@
+
+.cv-btn {
+    font-size: 14px;
+    line-height: 1.5714285714285714;
+    height: 32px;
+    padding: 4px 15px;
+    border-radius: 6px;
+    outline: none;
+    position: relative;
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    font-weight: 400;
+    white-space: nowrap;
+    text-align: center;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    user-select: none;
+    touch-action: manipulation;
+}
+
+
+.cv-btn-color-default {
+    color: rgba(0, 0, 0, 0.88);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
+}
+.cv-btn-color-primary {
+    color: #1677ff;
+    box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
+    color: #fff;
+    background: #1677ff;
+}
+.cv-btn-color-dangerous {
+    color: #ff4d4f;
+    box-shadow: 0 2px 0 rgba(255, 38, 5, 0.06);
+}
+.cv-btn-color-default {
+    color: rgba(0, 0, 0, 0.88);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
+}
+
+
+.cv-btn-variant-outlined{
+    border-color: #d9d9d9;
+    background: #ffffff;
+    &:hover {
+        color: #4096ff;
+        border-color: #4096ff;
+        background: #ffffff;
+    }
+}
+.cv-btn-variant-solid {
+    color: #fff;
+    background: #1677ff;
+    &:hover {
+        background: #4096ff;
+        color: #fff;
+    }
+}
+
+.cv-btn-color-dangerous.cv-btn-variant-outlined{
+    border-color: #ff4d4f;
+    background: #ffffff;
+    color: #ff4d4f;
+    box-shadow: 0 2px 0 rgba(255, 38, 5, 0.06);
+    &:hover {
+        color: #ff7875;
+        border-color: #ffa39e;
+    }
+}
+.cv-btn-color-dangerous.cv-btn-variant-solid{
+    color: #ff4d4f;
+    box-shadow: 0 2px 0 rgba(255, 38, 5, 0.06);
+    color: #fff;
+    background: #ff4d4f;
+    &:hover {
+        background: #4096ff;
+        color: #fff;
+        background: #ff7875;
+    }
+}
+
+
+.cv-btn-lg {
+    font-size: 16px;
+    line-height: 1.5;
+    height: 40px;
+    padding: 7px 15px;
+    border-radius: 8px;
+}
+.cv-btn-sm {
+    font-size: 14px;
+    line-height: 1.5714285714285714;
+    height: 24px;
+    padding: 0px 7px;
+    border-radius: 4px;
+}
