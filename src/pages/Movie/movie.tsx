@@ -13,10 +13,10 @@ import { DatePicker } from 'antd'
 import dayjs from 'dayjs'
 const { RangePicker } = DatePicker
 function Movie() {
-  const dateFormat = 'YYYY-MM-DD'
-  console.log('打印dayjs', dayjs('2019-08-01', dateFormat))
+  // console.log('打印dayjs', dayjs('2019-08-01', dateFormat))
   // 限制日期函数
   const disabledDate = (current: any) => {
+    const dateFormat = 'YYYY-MM-DD'
     return (
       current &&
       (current > dayjs('2020-12-01', dateFormat) || current < dayjs('2020-01-01', dateFormat))
