@@ -10,20 +10,20 @@ import CheckBoxGroup from '../../global/myAntd/CheckboxComp'
 import { useClickOutside } from '../../global/myHooks/useClickOutside'
 import { Link } from 'react-router-dom'
 import { DatePicker, Button } from 'antd'
-import { CvButton } from './myAntd/cvButton'
+import { CvButton } from './myAntd/CvButton'
+import { cvMessage } from './myAntd/CvMessage'
 import dayjs from 'dayjs'
+import { message } from 'antd'
 const { RangePicker } = DatePicker
 function Movie() {
-  const dateFormat = 'YYYY-MM-DD'
-  console.log('打印dayjs', dayjs('2019-08-01', dateFormat))
   // 限制日期函数
   const disabledDate = (current: any) => {
+    const dateFormat = 'YYYY-MM-DD'
     return (
       current &&
       (current > dayjs('2020-12-01', dateFormat) || current < dayjs('2020-01-01', dateFormat))
     )
   }
-
   //需要全屏的Dom
   const fullScreenDom = useRef<any>(null)
   //熟悉useFullscreen
@@ -66,23 +66,68 @@ function Movie() {
       e.map((item: any) => dayjs(item).format('YYYY-MM-DD'))
     )
   }
+
   return (
     <>
-      <div>
-        <Button>按钮</Button>
+      <div className={Styles.btnContainer}>
         <Button type="primary">按钮</Button>
+      </div>
+      <div>
+        <p>antd版:</p>
+        <Button
+          onClick={() => {
+            message.info('手写版button回调', 300)
+          }}
+        >
+          按钮
+        </Button>
+        <span className={Styles.btnSpan}>
+          <Button type="primary">按钮</Button>
+        </span>
         <Button danger>按钮</Button>
         <Button type="primary" danger>
           按钮
         </Button>
-        <Button size="large">按钮</Button>
+        <Button danger size="large">
+          按钮
+        </Button>
+        <Button type="primary" danger size="large">
+          按钮
+        </Button>
+        <Button danger size="small">
+          按钮
+        </Button>
+        <Button type="primary" danger size="small" style={{ marginLeft: '10px' }}>
+          按钮
+        </Button>
       </div>
       <div>
-        <CvButton>按 钮</CvButton>
+        <p>手写版：</p>
+        <CvButton
+          onClick={() => {
+            // message.info('手写版button回调', 300)
+            cvMessage.info('手写版全局提示')
+          }}
+        >
+          按 钮
+        </CvButton>
         <CvButton type="primary">按 钮</CvButton>
-        <CvButton>按 钮</CvButton>
-        <CvButton>按 钮</CvButton>
-        <CvButton>按 钮</CvButton>
+        <CvButton danger>按 钮</CvButton>
+        <CvButton type="primary" danger>
+          按 钮
+        </CvButton>
+        <CvButton danger size="large">
+          按 钮
+        </CvButton>
+        <CvButton type="primary" danger size="large">
+          按 钮
+        </CvButton>
+        <CvButton danger size="small">
+          按 钮
+        </CvButton>
+        <CvButton type="primary" danger size="small" style={{ marginLeft: '10px' }}>
+          按 钮
+        </CvButton>
       </div>
       <div className={Styles.movie}>
         <div className={cn(Styles['movie-item'], { [Styles.active]: true })}></div>

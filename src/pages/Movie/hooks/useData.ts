@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 // import { omit } from 'lodash'
 // import { useMyCallBack } from '../../../utils/ahooks/myUseCallback'
+
 export function useData() {
   console.log('测试双感叹号语法', !!0, !!1)
   const [movie, { toggle: setMovie }] = useToggle('超人', '蝙蝠侠')
@@ -41,8 +42,11 @@ export function useData() {
   useEffect(() => {
     console.log('打印location里的state', state, params.id)
     //slice
-    const arr = [1, 2, 3]
-    console.log('slice只传一个参数', arr.slice(2))
+    const arr: any[] = [1, 2, 3, 4]
+    let lastOne = arr[arr.length - 1]
+    arr.splice(arr.length - 1, 1)
+    arr.splice(2, 0, lastOne)
+    console.log('slice只传一个参数', arr)
 
     // console.log('测试lodash的omit', omit(obj, 'a'), obj)
     const columns: any[] = [
