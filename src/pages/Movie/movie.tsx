@@ -119,7 +119,9 @@ function Movie() {
           按 钮
         </CvButton>
         <CvButton type="primary">按 钮</CvButton>
-        <CvButton danger>按 钮</CvButton>
+        <CvButton danger className={Styles.newBtnClass}>
+          按 钮
+        </CvButton>
         <CvButton type="primary" danger>
           按 钮
         </CvButton>

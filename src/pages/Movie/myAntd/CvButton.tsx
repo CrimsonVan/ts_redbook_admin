@@ -1,7 +1,16 @@
 import cn from 'classnames'
 import Styles from './CvButton.module.less'
-export function CvButton({ children, type = 'default', size, danger, onClick, style }: any) {
+export function CvButton({
+  children,
+  type = 'default',
+  size,
+  danger,
+  onClick,
+  style,
+  className
+}: any) {
   return (
+    // <span className={className}>
     <button
       style={style}
       onClick={() => {
@@ -14,7 +23,8 @@ export function CvButton({ children, type = 'default', size, danger, onClick, st
         [Styles['cv-btn-variant-solid']]: type === 'primary',
         [Styles['cv-btn-lg']]: size && size === 'large',
         [Styles['cv-btn-sm']]: size && size === 'small',
-        [Styles['cv-btn-color-dangerous']]: danger
+        [Styles['cv-btn-color-dangerous']]: danger,
+        [`${className}`]: true
       })}
     >
       <span>{children}</span>
