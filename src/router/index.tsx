@@ -3,6 +3,7 @@ import Layout from '../pages/Layout/layout'
 import Home from '../pages/Layout/Home/home'
 import Test from '../pages/Layout/Test/test'
 import Movie from '../pages/Movie/movie'
+import AiChat from '../pages/AiChat/index'
 import Todolist from '../pages/Todolist/todolist'
 import Login from '../pages/Login/login'
 import Users from '../pages/Layout/Users/Users'
@@ -31,5 +32,6 @@ export const router = createHashRouter([
   { path: '/testhome', element: <TestHome /> },
   { path: '/login', element: <Login /> },
   { path: '/movie', element: <Movie /> },
+  { path: '/aichat', element: <AiChat /> },
   { path: '/todolist', element: <Todolist /> }
 ])

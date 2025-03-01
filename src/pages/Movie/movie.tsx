@@ -91,7 +91,9 @@ function Movie() {
         <span className={Styles.btnSpan}>
           <Button type="primary">按钮</Button>
         </span>
-        <Button danger>按钮</Button>
+        <Button danger className={Styles.antdBtnClass}>
+          按钮
+        </Button>
         <Button type="primary" danger>
           按钮
         </Button>
@@ -118,7 +120,9 @@ function Movie() {
         >
           按 钮
         </CvButton>
-        <CvButton type="primary">按 钮</CvButton>
+        <span className={Styles.myBtnSpan}>
+          <CvButton type="primary">按 钮</CvButton>
+        </span>
         <CvButton danger className={Styles.newBtnClass}>
           按 钮
         </CvButton>

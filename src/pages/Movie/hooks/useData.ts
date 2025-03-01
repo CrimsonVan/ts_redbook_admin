@@ -16,6 +16,10 @@ export function useData() {
   const testRef = useRef('1')
   const { state } = useLocation()
   const params = useParams()
+  useEffect(() => {
+    console.log('测试useEffect的回调是异步操作2')
+  }, [])
+  console.log('测试useEffect的回调是异步操作1')
   //模拟异步任务
   function getUsername(): Promise<string> {
     return new Promise((resolve) => {
