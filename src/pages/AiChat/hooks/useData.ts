@@ -4,12 +4,14 @@ import { produce } from 'immer'
 // import { SyncOutlined } from '@ant-design/icons'
 export function useAiData(dom: any) {
   const [msg, setMsg] = useState<string>('')
+  const [aiName, setAiName] = useState<string>('讯飞星火大模型')
   const [chatList, setChatList] = useState<any>([
     {
       user: 'ai',
-      content: '你好我是讯飞星火大模型'
+      content: '你好有什么问题都可以问我哈'
     }
   ])
+
   useEffect(() => {
     const scrollbottom = () => {
       setTimeout(() => {
@@ -90,6 +92,8 @@ export function useAiData(dom: any) {
     sendQues,
     chatList,
     msg,
-    setMsg
+    setMsg,
+    aiName,
+    setAiName
   }
 }
