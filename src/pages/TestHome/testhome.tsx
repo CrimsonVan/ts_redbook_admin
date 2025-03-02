@@ -44,7 +44,7 @@ function TestHome() {
     // console.log("获取dom", domRef.current?.value);
     domRef.current?.focus()
 
-    let timber: number = setTimeout(() => {
+    let timber: any = setTimeout(() => {
       console.log('已删除timber')
       clearTimeout(timber)
     }, 1000)

@@ -3,13 +3,13 @@ import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
 import 'highlight.js/styles/atom-one-dark.css'
 import { useAiData } from './hooks/useData'
-import { Input, Dropdown, Space } from 'antd'
+import { Input, Dropdown } from 'antd'
 import { useRef } from 'react'
-import { LoadingOutlined, DownOutlined } from '@ant-design/icons'
+import { LoadingOutlined, DownOutlined, SunOutlined, MoonOutlined } from '@ant-design/icons'
 function AiChat() {
   const ChatContainerRef = useRef(null)
   //处理ai问答所需数据的hooks
-  const { chatList, sendQues, msg, setMsg, aiName, setAiName, isStream } =
+  const { chatList, sendQues, msg, setMsg, aiName, setAiName, isStream, isDark, setIsDark } =
     useAiData(ChatContainerRef)
   //AI菜单
   const items: any = [
@@ -58,15 +58,32 @@ function AiChat() {
   ]
   return (
     <div>
-      <AiHeader>
+      <AiHeader $isdark={isDark}>
         <Dropdown menu={{ items }} trigger={['click']}>
-          <Space>
+          <div>
             <span>🤖{aiName}</span>
             <DownOutlined style={{ fontSize: '14px', cursor: 'pointer', marginLeft: '2px' }} />
-          </Space>
+          </div>
         </Dropdown>
+        {isDark === 'true' ? (
+          <MoonOutlined
+            onClick={() => {
+              setIsDark('false')
+              localStorage.setItem('AI_IS_DARK', 'false')
+            }}
+            className="theme-icon"
+          />
+        ) : (
+          <SunOutlined
+            onClick={() => {
+              setIsDark('true')
+              localStorage.setItem('AI_IS_DARK', 'true')
+            }}
+            className="theme-icon"
+          />
+        )}
       </AiHeader>
-      <ChatContainer ref={ChatContainerRef}>
+      <ChatContainer ref={ChatContainerRef} $isdark={isDark}>
         {chatList.length !== 0 &&
           chatList.map((item: any, index: any) =>
             item.role === 'loading' ? (
@@ -84,10 +101,10 @@ function AiChat() {
             )
           )}
       </ChatContainer>
-      <InputContainer>
+      <InputContainer $isdark={isDark}>
         <Input
           className="input"
-          placeholder={isStream ? 'AI正在飞速思考中......' : '请输入提问内容吧'}
+          placeholder={isStream ? 'AI正在飞速思考中🚀' : '请输入提问内容吧'}
           onPressEnter={(e: any) => {
             if (!isStream) {
               setMsg('')
@@ -113,10 +130,18 @@ const AiHeader: any = styled.div`
   font-weight: bolder;
   color: #fff;
   font-size: 20px;
+  position: relative;
+  .theme-icon {
+    position: absolute;
+    top: 50%;
+    right: 3%;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
 `
 const ChatContainer: any = styled.div`
   @media screen and (min-width: 280px) {
-    background-color: #ffffff;
+    background-color: ${(props: any) => (props.$isdark === 'true' ? '#292a2d' : '#ffffff')};
     height: calc(var(--vh) * 83);
     overflow: hidden;
     overflow-y: scroll;
@@ -130,10 +155,11 @@ const ChatContainer: any = styled.div`
       border-radius: 14px;
       height: 40px;
       width: 40px;
-      background-color: #f6f3ff;
       margin-top: 40px;
       line-height: 40px;
       text-align: center;
+      background-color: ${(props: any) => (props.$isdark === 'true' ? '#212327' : '#f6f3ff')};
+      color: ${(props: any) => (props.$isdark === 'true' ? '#ffffff' : '#000')};
     }
     .chatItemAi {
       padding: 0px 15px;
@@ -144,7 +170,8 @@ const ChatContainer: any = styled.div`
       height: fit-content;
       min-width: 40px;
       max-width: 94%;
-      background-color: #f6f3ff;
+      background-color: ${(props: any) => (props.$isdark === 'true' ? '#212327' : '#f6f3ff')};
+      color: ${(props: any) => (props.$isdark === 'true' ? '#ffffff' : '#000')};
       margin-top: 40px;
       &:first-child {
         margin-top: 0;
@@ -167,7 +194,7 @@ const ChatContainer: any = styled.div`
     }
   }
   @media screen and (min-width: 900px) {
-    background-color: #ffffff;
+    background-color: ${(props: any) => (props.$isdark === 'true' ? '#292a2d' : '#ffffff')};
     height: calc(var(--vh) * 83);
     overflow: hidden;
     overflow-y: scroll;
@@ -181,10 +208,11 @@ const ChatContainer: any = styled.div`
       border-radius: 14px;
       height: 40px;
       width: 40px;
-      background-color: #f6f3ff;
       margin-top: 40px;
       line-height: 40px;
       text-align: center;
+      background-color: ${(props: any) => (props.$isdark === 'true' ? '#212327' : '#f6f3ff')};
+      color: ${(props: any) => (props.$isdark === 'true' ? '#ffffff' : '#000')};
     }
     .chatItemAi {
       padding: 0px 15px;
@@ -195,7 +223,8 @@ const ChatContainer: any = styled.div`
       height: fit-content;
       min-width: 40px;
       max-width: 860px;
-      background-color: #f6f3ff;
+      background-color: ${(props: any) => (props.$isdark === 'true' ? '#212327' : '#f6f3ff')};
+      color: ${(props: any) => (props.$isdark === 'true' ? '#ffffff' : '#000')};
       margin-top: 40px;
       &:first-child {
         margin-top: 0;
@@ -224,11 +253,17 @@ const InputContainer: any = styled.div`
     display: flex;
     justify-content: center;
     align-items: start;
+    background-color: ${(props: any) => (props.$isdark === 'true' ? '#292a2d' : '#ffffff')};
     .input {
       height: calc(var(--vh) * 8);
       width: 96%;
       border: 2px #6e59c6 solid;
       border-radius: 16px;
+      color: ${(props: any) => (props.$isdark === 'true' ? '#ffffff' : '#000')};
+      background-color: ${(props: any) => (props.$isdark === 'true' ? '#404045' : '#ffffff')};
+    }
+    .input::-webkit-input-placeholder {
+      color: ${(props: any) => (props.$isdark === 'true' ? '#6f707b' : '#6e6e6e')};
     }
   }
   @media screen and (min-width: 900px) {
@@ -236,11 +271,17 @@ const InputContainer: any = styled.div`
     display: flex;
     justify-content: center;
     align-items: start;
+    background-color: ${(props: any) => (props.$isdark === 'true' ? '#292a2d' : '#ffffff')};
     .input {
       height: calc(var(--vh) * 8);
       width: 900px;
       border: 2px #6e59c6 solid;
       border-radius: 16px;
+      color: ${(props: any) => (props.$isdark === 'true' ? '#ffffff' : '#000')};
+      background-color: ${(props: any) => (props.$isdark === 'true' ? '#404045' : '#ffffff')};
+    }
+    .input::-webkit-input-placeholder {
+      color: ${(props: any) => (props.$isdark === 'true' ? '#6f707b' : '#6e6e6e')};
     }
   }
 `

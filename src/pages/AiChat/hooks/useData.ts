@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { getWebsocketUrl, getParams } from '../utils'
 import { produce } from 'immer'
-// import { SyncOutlined } from '@ant-design/icons'
 export function useAiData(dom: any) {
+  const [isDark, setIsDark] = useState<any>(
+    localStorage.getItem('AI_IS_DARK') ? localStorage.getItem('AI_IS_DARK') : 'true'
+  )
   const [isStream, setIsStream] = useState<any>(false)
   const [msg, setMsg] = useState<string>('')
   const [aiName, setAiName] = useState<string>('讯飞星火大模型')
@@ -113,6 +115,8 @@ export function useAiData(dom: any) {
     aiName,
     setAiName,
     isStream,
-    setIsStream
+    setIsStream,
+    isDark,
+    setIsDark
   }
 }
