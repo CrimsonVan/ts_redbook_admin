@@ -3,15 +3,19 @@ import { getWebsocketUrl, getParams } from '../utils'
 import { produce } from 'immer'
 // import { SyncOutlined } from '@ant-design/icons'
 export function useAiData(dom: any) {
+  const [isStream, setIsStream] = useState<any>(false)
   const [msg, setMsg] = useState<string>('')
   const [aiName, setAiName] = useState<string>('讯飞星火大模型')
   const [chatList, setChatList] = useState<any>([
     {
-      user: 'ai',
+      role: 'assistant',
       content: '你好有什么问题都可以问我哈'
     }
   ])
-
+  useEffect(() => {
+    const vh = window.innerHeight * 0.01
+    document.documentElement.style.setProperty('--vh', `${vh}px`)
+  }, [])
   useEffect(() => {
     const scrollbottom = () => {
       setTimeout(() => {
@@ -29,24 +33,36 @@ export function useAiData(dom: any) {
     setChatList(
       produce((draft: any) => {
         draft.push({
-          user: 'user',
+          role: 'user',
           content: msg
         })
         draft.push({
-          user: 'loading'
+          role: 'loading'
         })
       })
     )
+    setIsStream(true)
     let myUrl = getWebsocketUrl() as string
     let socket = new WebSocket(myUrl)
     socket.onopen = (event) => {
       console.log('连接启动', event)
-      socket.send(JSON.stringify(getParams(msg)))
+      socket.send(
+        JSON.stringify(
+          getParams([
+            ...chatList.slice(-2),
+            {
+              role: 'user',
+              content: msg
+            }
+          ])
+        )
+      )
       let AIreply: string
       socket.addEventListener('message', (event) => {
         let data = JSON.parse(event.data)
         if (data.header.code !== 0) {
           socket.close()
+          setIsStream(false)
         }
         if (data.header.code === 0) {
           if (data.payload.choices.text && data.header.status === 0) {
@@ -55,7 +71,7 @@ export function useAiData(dom: any) {
               produce((draft: any) => {
                 draft.pop()
                 draft.push({
-                  user: 'ai',
+                  role: 'assistant',
                   content: AIreply
                 })
               })
@@ -82,6 +98,7 @@ export function useAiData(dom: any) {
               AIreply = ''
               socket.close()
               console.log('对话关闭')
+              setIsStream(false)
             }, 1000)
           }
         }
@@ -94,6 +111,8 @@ export function useAiData(dom: any) {
     msg,
     setMsg,
     aiName,
-    setAiName
+    setAiName,
+    isStream,
+    setIsStream
   }
 }

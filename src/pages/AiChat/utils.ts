@@ -1,6 +1,5 @@
 import * as base64 from 'base-64'
 import CryptoJs from 'crypto-js'
-
 export const requestObj = {
   APPID: '030bc106',
   APISecret: 'Mjg0MmNiYTExOWQxMzY4OTM5MDE1ZTE2',
@@ -28,7 +27,7 @@ export const getWebsocketUrl = () => {
   return url
 }
 
-export const getParams = (content: string) => ({
+export const getParams = (content: any) => ({
   header: {
     app_id: requestObj.APPID,
     uid: 'redrun'
@@ -44,12 +43,13 @@ export const getParams = (content: string) => ({
     message: {
       // 如果想获取结合上下文的回答，需要开发者每次将历史问答信息一起传给服务端，如下示例
       // 注意：text里面的所有content内容加一起的tokens需要控制在8192以内，开发者如有较长对话需求，需要适当裁剪历史信息
-      text: [
-        // { role: 'user', content: '你是谁' }, //# 用户的历史问题
-        // { role: 'assistant', content: '我是张飞' }, //# AI的历史回答结果
-        // ....... 省略的历史对话
-        { role: 'user', content: content } //# 最新的一条问题，如无需上下文，可只传最新一条问题
-      ]
+      // text: [
+      //   { role: 'user', content: '我叫周丽峰' }, //# 用户的历史问题
+      //   { role: 'assistant', content: '好的' }, //# AI的历史回答结果
+      //   // ....... 省略的历史对话
+      //   { role: 'user', content: content } //# 最新的一条问题，如无需上下文，可只传最新一条问题
+      // ]
+      text: content
     }
   }
 })
