@@ -2,11 +2,12 @@ import { createSlice } from '@reduxjs/toolkit'
 import { userGetInfoService } from '../../api/user'
 // 内置类型检查
 import type { PayloadAction } from '@reduxjs/toolkit'
-
+import { io } from 'socket.io-client'
 type InitialState = {
   todoArr: Array<any>
   userInfo: any
   token: any
+  socket: any
 }
 type editArg = {
   index: number | null
@@ -15,7 +16,8 @@ type editArg = {
 const initialState: InitialState = {
   todoArr: ['吃饭', '睡觉', '看电影', '看鬼片'],
   userInfo: {},
-  token: null
+  token: null,
+  socket: () => io(`http://127.0.0.1:3052`)
 }
 const todoStore = createSlice({
   name: 'todolistStore',
