@@ -68,19 +68,14 @@ const ScrollxTable = ({ dataSource }: any) => {
     }
   ]
   return (
-    // <div
-    //   id="table_container"
-    // >
     <Table<any>
       columns={columns}
       dataSource={dataSource}
       scroll={{ x: 1800 }}
       sticky={{
-        // offsetHeader: 0,
         getContainer: () => document.getElementById('table_box') as HTMLElement
       }}
     />
-    // {/* </div> */}
   )
 }
 
